@@ -35,7 +35,13 @@ h2 {
     gap: 15px;
     margin-top: 15px;
 }
-
+.gallery img {
+    width: 100%;
+    border-radius: 8px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
 .gallery img:hover {
     transform: scale(1.03);
 }
@@ -56,41 +62,37 @@ footer {
 
 
 <main>
-<section>
-    <h2>Part 1 — The selfie up close vs. a few steps back and zoomed in </h2>
-    <div class="gallery">
-        <img src = "Part1/IMG_2781.jpg" alt = "up close" style="width:500px;height:600px;">
-        <img src = "Part1/IMG_2782.jpg" alt = "back and zoomed in" style="width:500px;height:600px;">
-    </div>
-</section>
-
-
-<section>
-    <h2>Part 2 —  Zoomed in path vs. closer camera. </h2>
-    <div class="gallery">
-        <img src = "Part2/IMG_2758.jpg" alt = "Zoomed in" style="width:500px;height:350px;">
-        <img src = "Part2/IMG_2759.jpg" alt = "Closer camera "style="width:500px;height:350px;">
-    </div>
-</section>
-
-
-<section>
-    <h2>Part 3 —  The Dolly Zoom </h2>
-    <div class="gallery">
-        <img src = "Part3/dolly.gif" alt = "Dolly gif!" style="width:500px;height:350px;">
-    </div>
-</section>
+    <section>
+        <h2>Part 1 — The selfie up close vs. a few steps back and zoomed in </h2>
+        <div class="gallery">
+            <img src = "Part1/IMG_2781.jpg" alt = "up close" style="width:500px;height:600px;">
+            <img src = "Part1/IMG_2782.jpg" alt = "back and zoomed in" style="width:500px;height:600px;">
+        </div>
+    </section>
+    
+    
+    <section>
+        <h2>Part 2 —  Zoomed in path vs. closer camera. </h2>
+        <div class="gallery">
+            <img src = "Part2/IMG_2758.jpg" alt = "Zoomed in" style="width:500px;height:350px;">
+            <img src = "Part2/IMG_2759.jpg" alt = "Closer camera "style="width:500px;height:350px;">
+        </div>
+    </section>
+    
+    
+    <section>
+        <h2>Part 3 —  The Dolly Zoom </h2>
+        <div class="gallery">
+            <img src = "Part3/dolly.gif" alt = "Dolly gif!" style="width:500px;height:350px;">
+        </div>
+    </section>
 </main>
 
 
 <footer>
- <span id="year"></span> • Abrahm DeVine
+ September 2025 • Abrahm DeVine
 </footer>
 
-
-<script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-</script>
     
 </body>
 </html>
