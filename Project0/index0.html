@@ -1,25 +1,96 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title> Computer Vision and Computational Photography </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-    </style>
+<title>Project 0</title>
+<style>
+    
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+header {
+    background: #4a6fa5;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+h2 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.gallery img:hover {
+    transform: scale(1.03);
+}
+footer {
+    text-align: center;
+    background: #eee;
+    padding: 10px;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #666;
+}
+</style>
 </head>
 <body>
-    <h1> Abrahm DeVine, Project 0 </h1>
-        <h3> Part 1: The selfie up close vs. a few steps back and zoomed in </h3>
-            <img src = "Part1/IMG_2781.jpg" alt = "up close" style="width:500px;height:600px;">
-            <img src = "Part1/IMG_2782.jpg" alt = "back and zoomed in" style="width:500px;height:600px;">
+<header>
+    <h1>Project 0</h1>
+</header>
 
-        <h3> Part 2: Zoomed in path vs. closer camera. </h3>
-            <img src = "Part2/IMG_2758.jpg" alt = "Zoomed in" style="width:500px;height:350px;">
-            <img src = "Part2/IMG_2759.jpg" alt = "Closer camera "style="width:500px;height:350px;">
 
-        <h3> Part 3: The Dolly Zoom </h3>
-            <img src = "Part3/dolly.gif" alt = "Dolly gif!" style="width:500px;height:350px;">
+<main>
+<section>
+    <h2>Part 1 — The selfie up close vs. a few steps back and zoomed in </h2>
+    <div class="gallery">
+        <img src = "Part1/IMG_2781.jpg" alt = "up close" style="width:500px;height:600px;">
+        <img src = "Part1/IMG_2782.jpg" alt = "back and zoomed in" style="width:500px;height:600px;">
+    </div>
+</section>
+
+
+<section>
+    <h2>Part 2 —  Zoomed in path vs. closer camera. </h2>
+    <div class="gallery">
+        <img src = "Part2/IMG_2758.jpg" alt = "Zoomed in" style="width:500px;height:350px;">
+        <img src = "Part2/IMG_2759.jpg" alt = "Closer camera "style="width:500px;height:350px;">
+    </div>
+</section>
+
+
+<section>
+    <h2>Part 3 —  The Dolly Zoom </h2>
+    <div class="gallery">
+        <img src = "Part3/dolly.gif" alt = "Dolly gif!" style="width:500px;height:350px;">
+    </div>
+</section>
+</main>
+
+
+<footer>
+ <span id="year"></span> • Abrahm DeVine
+</footer>
+
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+    
 </body>
 </html>
