@@ -5,146 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Class Projects Showcase</title>
   <style>
-    :root{
-      --bg:#0f1220; --panel:#151a2b; --text:#e8edf7; --muted:#a7b0c7; --brand:#5aa0ff; --border:#232a42;
-      --sticky-top:72px;
-    }
-    @media (prefers-color-scheme: light){
-      :root{ --bg:#f6f8ff; --panel:#ffffff; --text:#0e1220; --muted:#5b6478; --brand:#2563eb; --border:#e3e7f2; }
-    }
+    :root{ --bg:#0f1220; --panel:#15192b; --text:#e9edf6; --muted:#a7b0c7; --brand:#4f8bff; --border:#242b42; }
+    @media (prefers-color-scheme: light){ :root{ --bg:#f6f8ff; --panel:#ffffff; --text:#0d1320; --muted:#5c657a; --brand:#2563eb; --border:#e3e7f2; } }
+
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial; background:var(--bg); color:var(--text); line-height:1.55}
+    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--text); line-height:1.55}
     a{color:inherit}
 
-    /* Header */
-    .site-header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(1.2) blur(6px);
-      background:rgba(20,24,40,.7); border-bottom:1px solid var(--border)}
-    @media (prefers-color-scheme: light){ .site-header{ background:rgba(255,255,255,.75)} }
-    .header-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px}
-    .brand{font-weight:800; letter-spacing:.2px}
-    .spacer{flex:1}
+    .container{max-width:1200px; margin:0 auto; padding:20px}
 
-    /* Tabs */
-    .tablist{display:flex; gap:8px; padding:6px; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:auto}
-    .tab{appearance:none; border:0; background:transparent; color:var(--muted); padding:9px 12px; border-radius:10px; font-weight:600; cursor:pointer}
-    .tab[aria-selected="true"]{color:var(--text); background:rgba(90,160,255,.15); box-shadow:0 0 0 2px rgba(90,160,255,.3) inset}
+    /* 3-column layout */
+    .grid{display:grid; grid-template-columns: 220px 1fr 260px; gap:24px}
+    @media (max-width: 1024px){ .grid{grid-template-columns: 200px 1fr} .toc{display:none} }
+    @media (max-width: 720px){ .grid{grid-template-columns: 1fr} .projects{order:-1} }
 
-    /* Layout */
-    .shell{max-width:1200px; margin:0 auto; padding:20px}
-    .layout{display:grid; grid-template-columns:260px 1fr; gap:24px}
-    @media (max-width: 900px){ .layout{grid-template-columns:1fr} }
-
-    /* TOC */
-    .toc{position:sticky; top:var(--sticky-top); align-self:start}
-    .toc .box{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px}
-    .toc h3{margin:0 0 8px 0; font-size:1rem; opacity:.9}
-    .toc ul{list-style:none; padding:0; margin:0; display:grid; gap:6px}
-    .toc a{display:block; color:var(--muted); text-decoration:none; border-radius:8px; padding:6px 8px}
-    .toc a:hover{background:rgba(90,160,255,.12); color:var(--text)}
-    .toc .lvl2{padding-left:8px}
-
-    /* Panels */
-    .panel{display:none}
-    .panel.active{display:block}
-    .paper{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:18px}
-    h1,h2,h3{scroll-margin-top:calc(var(--sticky-top) + 16px)}
-    h2{margin-top:18px}
-    .meta{color:var(--muted); margin:2px 0 14px}
-      .shell{max-width:1200px; margin:0 auto; padding:20px}
-    .layout{display:grid; grid-template-columns:260px 1fr; gap:24px}
-    .layout-3{grid-template-columns:240px 1fr 260px}
-    @media (max-width: 1000px){ .layout-3{grid-template-columns:200px 1fr} }
-    @media (max-width: 760px){ .layout-3{grid-template-columns:1fr} }
-
-    .projects,.toc{position:sticky; top:var(--sticky-top); align-self:start}
     .box{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px}
     .aside-title{margin:0 0 8px 0; font-size:1rem; opacity:.9}
 
-    .projlist{display:flex; flex-direction:column; gap:8px}
-    .proj-link{appearance:none; border:1px solid var(--border); background:#0000; color:var(--muted); padding:10px 12px; border-radius:10px; text-align:left; cursor:pointer; font-weight:600}
-    .proj-link[aria-selected="true"]{color:var(--text); background:rgba(90,160,255,.12); box-shadow:0 0 0 2px rgba(90,160,255,.3) inset}
+    /* Left: projects list (vertical tabs) */
+    .projects{position:sticky; top:16px; align-self:start}
+    .project-nav{display:flex; flex-direction:column; gap:8px}
+    .project-btn{appearance:none; border:1px solid var(--border); background:transparent; color:var(--muted); padding:10px 12px; border-radius:10px; text-align:left; cursor:pointer; font-weight:600}
+    .project-btn[aria-selected="true"]{color:var(--text); background:rgba(79,139,255,.15); box-shadow:0 0 0 2px rgba(79,139,255,.3) inset}
 
+    /* Center: content panels */
+    .panel{display:none}
+    .panel.active{display:block}
+    .paper{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:18px}
+    h1,h2,h3{scroll-margin-top:80px}
+    h2{margin-top:18px}
+    .meta{color:var(--muted); margin:2px 0 14px}
+
+    /* Right: TOC */
+    .toc{position:sticky; top:16px; align-self:start}
     .toc ul{list-style:none; padding:0; margin:0; display:grid; gap:6px}
     .toc a{display:block; color:var(--muted); text-decoration:none; border-radius:8px; padding:6px 8px}
-    .toc a:hover{background:rgba(90,
+    .toc a:hover{background:rgba(79,139,255,.15); color:var(--text)}
+    .toc .lvl2{padding-left:8px}
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">Class Projects Showcase</div>
-      <div class="spacer"></div>
-      <div class="tablist" role="tablist" aria-label="Projects">
-        <button class="tab" role="tab" id="tab-p1" aria-controls="panel-p1" aria-selected="true">Project 1</button>
-        <button class="tab" role="tab" id="tab-p2" aria-controls="panel-p2" aria-selected="false">Project 2</button>
-      </div>
-    </div>
-  </header>
+  <div class="container">
+    <header style="margin-bottom:12px">
+      <h1 style="margin:0">Class Projects Showcase</h1>
+      <p style="margin:6px 0 0; color:var(--muted)">Use the left list to switch projects. The right index updates per project.</p>
+    </header>
 
-  <main class="shell">
-    <div class="layout layout-3">
-      <!-- LEFT: Projects nav -->
+    <div class="grid">
+      <!-- LEFT: Projects (vertical tabs) -->
       <aside class="projects" aria-label="Projects">
         <div class="box">
           <h3 class="aside-title">Projects</h3>
-          <nav class="projlist" role="tablist" aria-orientation="vertical">
-            <button class="proj-link" role="tab" id="tab-p1" aria-controls="panel-p1" aria-selected="true">Project 1</button>
-            <button class="proj-link" role="tab" id="tab-p2" aria-controls="panel-p2" aria-selected="false">Project 2</button>
+          <nav class="project-nav" role="tablist" aria-orientation="vertical">
+            <button class="project-btn" role="tab" data-target="#p1" aria-controls="p1" aria-selected="true">Project 1</button>
+            <button class="project-btn" role="tab" data-target="#p2" aria-controls="p2" aria-selected="false">Project 2</button>
           </nav>
         </div>
       </aside>
 
-      <!-- CENTER: Main content panels -->
-      <section>
-        <!-- Project 1 -->
-        <article id="panel-p1" class="panel active" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
+      <!-- CENTER: Panels -->
+      <main>
+        <article id="p1" class="panel active" role="tabpanel" aria-labelledby="p1-tab" tabindex="0">
           <div class="paper">
             <h1>CS 180 Project 1: Images of the Russian Empire</h1>
             <p class="meta">Author • Semester • Tools: Python, NumPy, OpenCV</p>
 
             <h2>Introduction</h2>
-            <p>Briefly describe your goal, dataset, and constraints. Mention a high-level result.</p>
+            <p>Describe your goal, data sources, and a highlight result.</p>
 
             <h2>Methodology</h2>
             <h3>Single-Scale Version</h3>
-            <p>Explain your NCC / SSD search and windowing. Add one image or table.</p>
+            <p>Your NCC/SSD search and windowing.</p>
             <h3>Pyramid-Speedup Version</h3>
-            <p>Describe your Gaussian pyramid, search radii, and coarse-to-fine strategy.</p>
+            <p>Gaussian pyramid and coarse-to-fine search.</p>
 
             <h2>Metrics</h2>
-            <p>What score did you optimize? Include a formula screenshot or code snippet if desired.</p>
+            <p>Which metric you optimized and why.</p>
 
             <h2>Gallery and Results</h2>
-            <p>Before/after comparisons, aligned channels, or colorized outputs.</p>
+            <p>Before/after, aligned channels, colorization.</p>
 
             <h2>Problems Encountered</h2>
-            <p>Edge cases, aliasing, border handling, runtime, etc. What would you improve next?</p>
+            <p>Edge cases, runtime, border handling.</p>
           </div>
         </article>
 
-        <!-- Project 2 -->
-        <article id="panel-p2" class="panel" role="tabpanel" aria-labelledby="tab-p2" tabindex="0">
+        <article id="p2" class="panel" role="tabpanel" aria-labelledby="p2-tab" tabindex="0">
           <div class="paper">
-            <h1>CS 180 Project 2: (Your Title)</h1>
+            <h1>CS 180 Project 2: Your Title</h1>
             <p class="meta">Author • Semester • Tools: scikit-image, Matplotlib</p>
 
             <h2>Introduction</h2>
-            <p>What problem did you tackle? Summarize your contribution.</p>
+            <p>Problem summary and contribution.</p>
 
             <h2>Methodology</h2>
             <h3>Core Method</h3>
             <p>Key ideas and algorithm choices.</p>
             <h3>Variants & Ablations</h3>
-            <p>What variations did you try? What mattered?</p>
+            <p>What variations you tried and findings.</p>
 
             <h2>Results</h2>
-            <p>Qualitative and quantitative outcomes with brief commentary.</p>
+            <p>Qualitative and quantitative outcomes.</p>
 
             <h2>Lessons Learned</h2>
-            <p>Reflect on trade-offs, future work, and open questions.</p>
+            <p>Trade-offs, improvements, future work.</p>
           </div>
         </article>
-      </section>
+      </main>
 
       <!-- RIGHT: On this page (TOC) -->
       <aside class="toc" aria-label="On this page">
@@ -154,60 +122,60 @@
         </div>
       </aside>
     </div>
-  </main>
+  </div>
 
   <script>
-    // Accessible tabs
-    const tabs = Array.from(document.querySelectorAll('.tab'));
+    // Vertical tabs logic
+    const buttons = Array.from(document.querySelectorAll('.project-btn'));
     const panels = Array.from(document.querySelectorAll('.panel'));
-    function activateTab(tab){
-      tabs.forEach(t=>t.setAttribute('aria-selected', String(t===tab)));
-      panels.forEach(p=>p.classList.toggle('active', p.id === tab.getAttribute('aria-controls')));
+
+    function showPanel(targetId){
+      panels.forEach(p=>p.classList.toggle('active', '#' + p.id === targetId));
+      buttons.forEach(b=>b.setAttribute('aria-selected', String(b.dataset.target === targetId)));
       buildTOC();
-      const panel = document.getElementById(tab.getAttribute('aria-controls'));
-      if(panel) panel.focus({preventScroll:true});
+      const p = document.querySelector(targetId);
+      if(p) { p.focus({preventScroll:true}); history.replaceState(null, '', targetId); }
     }
-    document.querySelector('[role="tablist"]').addEventListener('click', e=>{
-      const btn = e.target.closest('.tab'); if(!btn) return; activateTab(btn);
-    });
-    document.querySelector('[role="tablist"]').addEventListener('keydown', e=>{
-      const i = tabs.indexOf(document.activeElement); if(i<0) return;
-      if(e.key==='ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
-      if(e.key==='ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
-      if(e.key==='Home'){ e.preventDefault(); tabs[0].focus(); }
-      if(e.key==='End'){ e.preventDefault(); tabs[tabs.length-1].focus(); }
-      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activateTab(document.activeElement); }
+
+    document.querySelector('.project-nav').addEventListener('click', (e)=>{
+      const btn = e.target.closest('.project-btn'); if(!btn) return; showPanel(btn.dataset.target);
     });
 
-    // Build a sidebar TOC from h2/h3 of the active panel
+    document.querySelector('.project-nav').addEventListener('keydown', (e)=>{
+      const i = buttons.indexOf(document.activeElement); if(i<0) return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); buttons[(i+1)%buttons.length].focus(); }
+      if(e.key==='ArrowUp'){ e.preventDefault(); buttons[(i-1+buttons.length)%buttons.length].focus(); }
+      if(e.key==='Home'){ e.preventDefault(); buttons[0].focus(); }
+      if(e.key==='End'){ e.preventDefault(); buttons[buttons.length-1].focus(); }
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); const btn=document.activeElement; showPanel(btn.dataset.target); }
+    });
+
+    // Build right-hand TOC from active panel h2/h3
     function slugify(str){ return str.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
     function buildTOC(){
       const toc = document.getElementById('toc-list'); toc.innerHTML='';
       const active = document.querySelector('.panel.active'); if(!active) return;
       const headers = active.querySelectorAll('h2, h3');
-      const panelPrefix = active.id + '-';
+      headers.forEach(h=>{ if(!h.id) h.id = active.id + '-' + slugify(h.textContent); });
       headers.forEach(h=>{
-        if(!h.id){ h.id = panelPrefix + slugify(h.textContent); }
-        const li = document.createElement('li');
-        if(h.tagName==='H3') li.className='lvl2';
-        const a = document.createElement('a'); a.href = '#' + h.id; a.textContent = h.textContent;
-        li.appendChild(a); toc.appendChild(li);
+        const li = document.createElement('li'); if(h.tagName==='H3') li.className='lvl2';
+        const a = document.createElement('a'); a.href = '#' + h.id; a.textContent = h.textContent; li.appendChild(a); toc.appendChild(li);
       });
     }
 
-    // Smooth scrolling within the active panel only
+    // Smooth scrolling for TOC links
     document.addEventListener('click', (e)=>{
-      const a = e.target.closest('a[href^="#"]');
-      if(!a) return;
-      const id = a.getAttribute('href').slice(1);
-      const target = document.getElementById(id);
+      const a = e.target.closest('a[href^="#"]'); if(!a) return;
+      const id = a.getAttribute('href').slice(1); const target = document.getElementById(id);
       if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
     });
 
-    // Init
-    buildTOC();
+    // Initialize from hash or default
+    (function init(){
+      const hash = location.hash || '#p1';
+      const found = panels.some(p => '#' + p.id === hash);
+      showPanel(found ? hash : '#p1');
+    })();
   </script>
 </body>
 </html>
-
-
