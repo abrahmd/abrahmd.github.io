@@ -81,9 +81,9 @@
 
             <h2>Methodology</h2>
             <h3>Single-Scale Version</h3>
-            <p> The first step was to considers metric for similarity between two photos. The black and white images only contain the brightness values accross three channels, and of course each color is not equally bright Below are lower 
-              resolution jpg images where I tested the Normalized Cross-Correlation, or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a baseline, I shifted the red and blue filtered images
-              over a range of -15 to 15 in both the x and y directions, maximizing the NCC over all possible shifts. The results were enough to confirm the of NCC as a reasonable metric and the runtime was less than a second.
+            <p> The first step was to considers metric for similarity between two photos. The black and white images only contain the brightness values accross three channels, and of course each color is not equally bright. Below are lower 
+              resolution jpg images where I tested the Normalized Cross-Correlation (equation below), or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a static reference, I shifted (np.roll()) every pixel in the red and blue filtered images
+              over a range of -15 to 15 in both the x and y directions, maximizing the NCC of the shifted image and the green image over all possible shifts. The results, shown below, were sufficiently aligned to confirm the of NCC as a reasonable metric and the runtime was less than a second.
             </p>
                  <figure class="eq">
                      <figcaption> Normalized Cross-Correlation (NCC)</figcaption>
@@ -91,30 +91,30 @@
                       $$\mathrm{NCC}(I,J)=
                       \frac{\sum_{x,y}\big(I(x,y)-\bar I\big)\big(J(x,y)-\bar J\big)}
                       {\sqrt{\sum_{x,y}\big(I(x,y)-\bar I\big)^2}\,
-                      \sqrt{\sum_{x,y}\big(J(x,y)-\bar J\big)^2}} \tag{1}$$
+                      \sqrt{\sum_{x,y}\big(J(x,y)-\bar J\big)^2}} }$$
                     </p>
               </figure>
 
             <figure class="media">
                <img src="Project1/out_path_jpgs/cathedral.jpg.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Reconstructed color jpg cathedral image, reconstructed by shifting the red filtered image (7,1) for axis=(0,1) and the blue filtered image (-5,-2) for axis=(0,1) </figcaption>
+               <figcaption> Reconstructed color jpg cathedral image, reconstructed by shifting the red filtered image (7,1) for axis=(0,1) and the blue filtered image (-5,-2) for axis=(0,1). </figcaption>
             </figure>
 
             <figure class="media">
                <img src="Project1/out_path_jpgs/monastery.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Color jpg Monastery image, reconstructed by shifting the red filtered image (6, 1) for axis=(0,1) and the blue image (3, -2) for axis=(0,1)  </figcaption>
+               <figcaption> Color jpg Monastery image, reconstructed by shifting the red filtered image (6, 1) for axis=(0,1) and the blue image (3, -2) for axis=(0,1).  </figcaption>
             </figure>
 
             <figure class="media">
                <img src="Project1/out_path_jpgs/tobolsk.jpg.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Color jpg Tobolsk image, reconstructed by shifting the red filtered image (4,1) for axis=(0,1) and the blue filtered image (-3,-3) for axis=(0,1) </figcaption>
+               <figcaption> Color jpg Tobolsk image, reconstructed by shifting the red filtered image (4,1) for axis=(0,1) and the blue filtered image (-3,-3) for axis=(0,1). </figcaption>
             </figure>
 
             
             
             <h3> Tackling High-Res Images with Pyramid-Speedup </h3>
-            <p> For higher-resolution images, an 15x15 pixel window is not sufficient to allign images properly and a larger window becomes increasingly computationally expensive. By creating a Gaussian pyramid, this same calculation can be 
-              performed on a smaller image with an even smaller window to search. Small shifts in downsampled images translate to larger shifts in the original large image. In my implementation, I searched an 8x8 pixel window at each level of 
+            <p> For higher-resolution images, a 15x15 pixel window is not sufficient to allign images properly and a larger window becomes increasingly computationally expensive. By creating a Gaussian pyramid, this same exhausted search can be 
+              performed on a smaller image with an even smaller window to search. Small shifts in downsampled images translate to larger shifts in the original large image relative to the downsizing factor, in this case 2. In my implementation, I searched an 8x8 pixel window at each level of 
               the pyramid, which proved to be sufficient at aligning the images properly and in roughly 15 seconds per image. This parameter could potentially be smaller and/or decreased while traversing the pyramid. I also tried the 
               same implementation on a Laplacian pyramid, but the Gauassian pyramid imlementation slightly outperformed (higher NCC score) the Laplacian for all images.
               </p>
@@ -170,7 +170,7 @@
 
             <h2>Contrast</h2>
             <p>
-              Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly ampping them to 0 and 1 brightness intensity, thus
+              Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly mapping them to 0 and 1 brightness intensity, thus
               ensuring that every channel spans a full range of brightness. The result is an image with more dark and light pixels and thus more contrast. A dull, flat image for example would have a much more drastic transformation.
               
               <figure class="media">
