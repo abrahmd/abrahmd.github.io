@@ -1,105 +1,185 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title> Class Projects Showcase</title>
-<style>
-:root{
---bg:#0f1220; --panel:#151a2b; --text:#e8edf7; --muted:#a7b0c7; --brand:#5aa0ff; --border:#232a42;
---sticky-top:72px;
-}
-@media (prefers-color-scheme: light){
-:root{ --bg:#f6f8ff; --panel:#ffffff; --text:#0e1220; --muted:#5b6478; --brand:#2563eb; --border:#e3e7f2; }
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial; background:var(--bg); color:var(--text); line-height:1.55}
-a{color:inherit}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Class Projects Showcase</title>
+  <style>
+    :root{
+      --bg:#0f1220; --panel:#151a2b; --text:#e8edf7; --muted:#a7b0c7; --brand:#5aa0ff; --border:#232a42;
+      --sticky-top:72px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f6f8ff; --panel:#ffffff; --text:#0e1220; --muted:#5b6478; --brand:#2563eb; --border:#e3e7f2; }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial; background:var(--bg); color:var(--text); line-height:1.55}
+    a{color:inherit}
 
+    /* Header */
+    .site-header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(1.2) blur(6px);
+      background:rgba(20,24,40,.7); border-bottom:1px solid var(--border)}
+    @media (prefers-color-scheme: light){ .site-header{ background:rgba(255,255,255,.75)} }
+    .header-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px}
+    .brand{font-weight:800; letter-spacing:.2px}
+    .spacer{flex:1}
 
-/* Header */
-.site-header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(1.2) blur(6px);
-background:rgba(20,24,40,.7); border-bottom:1px solid var(--border)}
-@media (prefers-color-scheme: light){ .site-header{ background:rgba(255,255,255,.75)} }
-.header-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px}
-.brand{font-weight:800; letter-spacing:.2px}
-.spacer{flex:1}
+    /* Tabs */
+    .tablist{display:flex; gap:8px; padding:6px; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:auto}
+    .tab{appearance:none; border:0; background:transparent; color:var(--muted); padding:9px 12px; border-radius:10px; font-weight:600; cursor:pointer}
+    .tab[aria-selected="true"]{color:var(--text); background:rgba(90,160,255,.15); box-shadow:0 0 0 2px rgba(90,160,255,.3) inset}
 
+    /* Layout */
+    .shell{max-width:1200px; margin:0 auto; padding:20px}
+    .layout{display:grid; grid-template-columns:260px 1fr; gap:24px}
+    @media (max-width: 900px){ .layout{grid-template-columns:1fr} }
 
-/* Tabs */
-.tablist{display:flex; gap:8px; padding:6px; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:auto}
-.tab{appearance:none; border:0; background:transparent; color:var(--muted); padding:9px 12px; border-radius:10px; font-weight:600; cursor:pointer}
-.tab[aria-selected="true"]{color:var(--text); background:rgba(90,160,255,.15); box-shadow:0 0 0 2px rgba(90,160,255,.3) inset}
+    /* TOC */
+    .toc{position:sticky; top:var(--sticky-top); align-self:start}
+    .toc .box{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px}
+    .toc h3{margin:0 0 8px 0; font-size:1rem; opacity:.9}
+    .toc ul{list-style:none; padding:0; margin:0; display:grid; gap:6px}
+    .toc a{display:block; color:var(--muted); text-decoration:none; border-radius:8px; padding:6px 8px}
+    .toc a:hover{background:rgba(90,160,255,.12); color:var(--text)}
+    .toc .lvl2{padding-left:8px}
 
-
-/* Layout */
-.shell{max-width:1200px; margin:0 auto; padding:20px}
-.layout{display:grid; grid-template-columns:260px 1fr; gap:24px}
-@media (max-width: 900px){ .layout{grid-template-columns:1fr} }
-
-
-/* TOC */
-.toc{position:sticky; top:var(--sticky-top); align-self:start}
-.toc .box{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px}
-.toc h3{margin:0 0 8px 0; font-size:1rem; opacity:.9}
-.toc ul{list-style:none; padding:0; margin:0; display:grid; gap:6px}
-.toc a{display:block; color:var(--muted); text-decoration:none; border-radius:8px; padding:6px 8px}
-.toc a:hover{background:rgba(90,160,255,.12); color:var(--text)}
-.toc .lvl2{padding-left:8px}
-
-
-/* Panels */
-.panel{display:none}
-.panel.active{display:block}
-.paper{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:18px}
-h1,h2,h3{scroll-margin-top:calc(var(--sticky-top) + 16px)}
-h2{margin-top:18px}
-.meta{color:var(--muted); margin:2px 0 14px}
-</style>
+    /* Panels */
+    .panel{display:none}
+    .panel.active{display:block}
+    .paper{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:18px}
+    h1,h2,h3{scroll-margin-top:calc(var(--sticky-top) + 16px)}
+    h2{margin-top:18px}
+    .meta{color:var(--muted); margin:2px 0 14px}
+  </style>
 </head>
 <body>
-<header class="site-header">
-<div class="header-inner">
-<div class="brand">Class Projects Showcase</div>
-<div class="spacer"></div>
-<div class="tablist" role="tablist" aria-label="Projects">
-<button class="tab" role="tab" id="tab-p1" aria-controls="panel-p1" aria-selected="true">Project 1</button>
-<button class="tab" role="tab" id="tab-p2" aria-controls="panel-p2" aria-selected="false">Project 2</button>
-</div>
-</div>
-</header>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">Class Projects Showcase</div>
+      <div class="spacer"></div>
+      <div class="tablist" role="tablist" aria-label="Projects">
+        <button class="tab" role="tab" id="tab-p1" aria-controls="panel-p1" aria-selected="true">Project 1</button>
+        <button class="tab" role="tab" id="tab-p2" aria-controls="panel-p2" aria-selected="false">Project 2</button>
+      </div>
+    </div>
+  </header>
 
+  <main class="shell">
+    <div class="layout">
+      <!-- Sidebar TOC -->
+      <aside class="toc">
+        <div class="box">
+          <h3>On this page</h3>
+          <ul id="toc-list"></ul>
+        </div>
+      </aside>
 
-<main class="shell">
-<div class="layout">
-<!-- Sidebar TOC -->
-<aside class="toc">
-<div class="box">
-<h3>On this page</h3>
-<ul id="toc-list"></ul>
-</div>
-</aside>
+      <!-- Main content panels -->
+      <section>
+        <!-- Project 1 -->
+        <article id="panel-p1" class="panel active" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
+          <div class="paper">
+            <h1>CS 180 Project 1: Images of the Russian Empire</h1>
+            <p class="meta">Author • Semester • Tools: Python, NumPy, OpenCV</p>
 
+            <h2>Introduction</h2>
+            <p>Briefly describe your goal, dataset, and constraints. Mention a high-level result.</p>
 
-<!-- Main content panels -->
-<section>
-<!-- Project 1 -->
-<article id="panel-p1" class="panel active" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
-<div class="paper">
-<h1>CS 180 Project 1: Images of the Russian Empire</h1>
-<p class="meta">Author • Semester • Tools: Python, NumPy, OpenCV</p>
+            <h2>Methodology</h2>
+            <h3>Single-Scale Version</h3>
+            <p>Explain your NCC / SSD search and windowing. Add one image or table.</p>
+            <h3>Pyramid-Speedup Version</h3>
+            <p>Describe your Gaussian pyramid, search radii, and coarse-to-fine strategy.</p>
 
+            <h2>Metrics</h2>
+            <p>What score did you optimize? Include a formula screenshot or code snippet if desired.</p>
 
-<h2>Introduction</h2>
-<p>Briefly describe your goal, dataset, and constraints. Mention a high-level result.</p>
+            <h2>Gallery and Results</h2>
+            <p>Before/after comparisons, aligned channels, or colorized outputs.</p>
 
+            <h2>Problems Encountered</h2>
+            <p>Edge cases, aliasing, border handling, runtime, etc. What would you improve next?</p>
+          </div>
+        </article>
 
-<h2>Methodology</h2>
-<h3>Single-Scale Version</h3>
-<p>Explain your NCC / SSD search and windowing. Add one image or table.</p>
-<h3>Pyramid-Speedup Version</h3>
-<p>Describe your Gaussian pyramid, search radii, and coarse-to-fine strategy.</p>
+        <!-- Project 2 -->
+        <article id="panel-p2" class="panel" role="tabpanel" aria-labelledby="tab-p2" tabindex="0">
+          <div class="paper">
+            <h1>CS 180 Project 2: (Your Title)</h1>
+            <p class="meta">Author • Semester • Tools: scikit-image, Matplotlib</p>
 
+            <h2>Introduction</h2>
+            <p>What problem did you tackle? Summarize your contribution.</p>
 
-headers.forEach
+            <h2>Methodology</h2>
+            <h3>Core Method</h3>
+            <p>Key ideas and algorithm choices.</p>
+            <h3>Variants & Ablations</h3>
+            <p>What variations did you try? What mattered?</p>
+
+            <h2>Results</h2>
+            <p>Qualitative and quantitative outcomes with brief commentary.</p>
+
+            <h2>Lessons Learned</h2>
+            <p>Reflect on trade-offs, future work, and open questions.</p>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Accessible tabs
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    function activateTab(tab){
+      tabs.forEach(t=>t.setAttribute('aria-selected', String(t===tab)));
+      panels.forEach(p=>p.classList.toggle('active', p.id === tab.getAttribute('aria-controls')));
+      buildTOC();
+      const panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if(panel) panel.focus({preventScroll:true});
+    }
+    document.querySelector('[role="tablist"]').addEventListener('click', e=>{
+      const btn = e.target.closest('.tab'); if(!btn) return; activateTab(btn);
+    });
+    document.querySelector('[role="tablist"]').addEventListener('keydown', e=>{
+      const i = tabs.indexOf(document.activeElement); if(i<0) return;
+      if(e.key==='ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+      if(e.key==='ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+      if(e.key==='Home'){ e.preventDefault(); tabs[0].focus(); }
+      if(e.key==='End'){ e.preventDefault(); tabs[tabs.length-1].focus(); }
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activateTab(document.activeElement); }
+    });
+
+    // Build a sidebar TOC from h2/h3 of the active panel
+    function slugify(str){ return str.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+    function buildTOC(){
+      const toc = document.getElementById('toc-list'); toc.innerHTML='';
+      const active = document.querySelector('.panel.active'); if(!active) return;
+      const headers = active.querySelectorAll('h2, h3');
+      const panelPrefix = active.id + '-';
+      headers.forEach(h=>{
+        if(!h.id){ h.id = panelPrefix + slugify(h.textContent); }
+        const li = document.createElement('li');
+        if(h.tagName==='H3') li.className='lvl2';
+        const a = document.createElement('a'); a.href = '#' + h.id; a.textContent = h.textContent;
+        li.appendChild(a); toc.appendChild(li);
+      });
+    }
+
+    // Smooth scrolling within the active panel only
+    document.addEventListener('click', (e)=>{
+      const a = e.target.closest('a[href^="#"]');
+      if(!a) return;
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+
+    // Init
+    buildTOC();
+  </script>
+</body>
+</html>
+
