@@ -128,8 +128,14 @@
 
             
             
-            <h3>Pyramid-Speedup Version</h3>
-            <p>Gaussian pyramid and coarse-to-fine search.</p>
+            <h3> Tackling High-Res Images with Pyramid-Speedup </h3>
+            <p> For higher-resolution images, an 15x15 pixel window is not sufficient to allign images properly and a larger window becomes increasingly computationally expensive. By creating a Gaussian pyramid, this same calculation can be 
+              performed on a smaller image with an even smaller window to search. Small shifts in downsampled images translate to larger shifts in the original large image. In my implementation, I searched an 8x8 pixel window at each level of 
+              the pyramid, which proved to be sufficient at aligning the images properly and in roughly 15 seconds per image. This parameter could potentially be smaller and/or decreased while traversing the pyramid. I also tried the 
+              same implementation on a Laplacian pyramid.
+              </p>
+
+            
 
             <h2>Metrics</h2>
             <p>Which metric you optimized and why.</p>
