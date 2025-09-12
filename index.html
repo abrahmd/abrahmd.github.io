@@ -188,6 +188,7 @@
             <p>
               Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly ampping them to 0 and 1 brightness intensity, thus
               ensuring that every channel spans a full range of brightness. The result is an image with more dark and light pixels and thus more contrast. A dull, flat image for example would have a much more drastic transformation.
+              
               <figure class="media">
                <img src="Project1/out_path_jpgs/ex1.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
                <figcaption> Large coconut-like object with no added contrast </figcaption>
@@ -210,11 +211,50 @@
               
             </p>
 
-            <h2>Gallery and Results</h2>
-            <p>Before/after, aligned channels, colorization.</p>
+            <h2> Automatic white balance - shift to grey </h2>
+            <p>
 
-            <h2>Problems Encountered</h2>
-            <p>Edge cases, runtime, border handling.</p>
+              Below are the same two images with an additional white balancing added to them. This feature works by finding the mean of each color channel and then multiplying each channel by some value such that their means are all equal, thus
+              making each color equally intense on average. This is an assumption that I do not think is fair to make in most lighting conditions, and in these two photos it adds an unnatural looking saturation effect.
+              
+              <figure class="media">
+               <img src="Project1/out_path_jpgs/ex1.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Large coconut-like object with no added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Large coconut-like object with added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex2.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Waterfall with no added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Waterfall with added contrast </figcaption>
+            </figure>
+                
+            </p>
+
+            <h2> Gradient based alignment </h2>
+            <p> Rather than assume color channels should be equal for alignment (which, based on the saturation that occurs in the white balancing above, is not a good assumption), we can change our features and consider instead the gradients and thus
+              the change in color. This has more potential to align shadows and natural changes in light that affect all colors, and should work better on images that contain a lot of red, green or blue. However, when I ran my implementation,
+              the results were surprisingly worse than the original implementation. 
+              
+            </p>
+
+            <h2> Automatic cropping </h2>
+            <p> For this task, I attempted to detect lines at the borders of the complete rgb image. Visually, these lines appear black, red, green, or blue (or the inverse of rgb). I expected to find entire rows or columns to have all channels 
+              below some threshold (black borders), have one channel below some threshold (inverse rgb borders), or have two channels below a threshold (rgb borders). However, I was unable to get this approach up and running succesfully. Perhaps an
+              alternate approach or a bug-free implementation is required. I instead employed an automatic crop of 5% off each edge before aligning the images with the hope that this would not only cause better alignment but reduce left over
+              borders. Regardless, most of the images alligned have some sort of irregular border that I think holds its own beauty and nostalgia for vintage aesthetics and the imperfection of film photographs. After all, no matter how many modern
+              tricks we can apply to images, there remains an impossibility of grasping truth. The image will always be a ghostly and artificial attempt at capturing what is already lost or creating what was never there to begin with. 
+
+              
+            </p>
           </div>
         </article>
 
