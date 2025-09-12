@@ -224,9 +224,15 @@
             </p>
 
             <h2> Gradient based alignment </h2>
-            <p> Rather than assume color channels should be equal for alignment (which, based on the saturation that occurs in the white balancing above, is not a good assumption), we can change our features and consider instead the gradients and thus
+            <p> Rather than assume color channels should be equal for alignment (which, based on the saturation that occurs in the white balancing above, is not a good assumption), we can change our features and consider instead the NCC score of the gradients and thus
               the change in color. This has more potential to align shadows and natural changes in light that affect all colors, and should work better on images that contain a lot of red, green or blue. However, when I ran my implementation,
               the results were surprisingly worse than the original implementation. 
+
+              <figure class="media">
+               <img src="Project1/out_path_jpgs/church_gradient.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Church aligned by the NCC score of the gradients. Red shift=(33,-8) for axis=(0,1) and NCC score 0.82. Blue shift = (-25,-4) for axis=(0,1) and NCC score 0.84.  Compared with the original Church image above, 
+               this set up underperforms slightly. To the naked eye, it hardly distinguishable. </figcaption>
+            </figure>
               
             </p>
 
