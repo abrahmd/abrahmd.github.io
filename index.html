@@ -82,19 +82,10 @@
             <h2>Methodology</h2>
             <h3>Single-Scale Version</h3>
             <p> The first step was to considers metric for similarity between two photos. The black and white images only contain the brightness values accross three channels, and of course each color is not equally bright. Below are lower 
-              resolution jpg images where I tested the Normalized Cross-Correlation (equation below), or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a static reference, I shifted (np.roll()) every pixel in the red and blue filtered images
+              resolution jpg images where I tested the Normalized Cross-Correlation, or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a static reference, I shifted (np.roll()) every pixel in the red and blue filtered images
               over a range of -15 to 15 in both the x and y directions, maximizing the NCC of the shifted image and the green image over all possible shifts. The results, shown below, were sufficiently aligned to confirm the of NCC as a reasonable metric and the runtime was less than a second.
             </p>
-                 <figure class="eq">
-                     <figcaption> Normalized Cross-Correlation (NCC)</figcaption>
-                     <p>
-                      $$\mathrm{NCC}(I,J)=
-                      \frac{\sum_{x,y}\big(I(x,y)-\bar I\big)\big(J(x,y)-\bar J\big)}
-                      {\sqrt{\sum_{x,y}\big(I(x,y)-\bar I\big)^2}\,
-                      \sqrt{\sum_{x,y}\big(J(x,y)-\bar J\big)^2}$$
-                    </p>
-              </figure>
-
+                 
             <figure class="media">
                <img src="Project1/out_path_jpgs/cathedral.jpg.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
                <figcaption> Reconstructed color jpg cathedral image, reconstructed by shifting the red filtered image (7,1) for axis=(0,1) and the blue filtered image (-5,-2) for axis=(0,1). </figcaption>
