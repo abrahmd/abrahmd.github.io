@@ -1,9 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script>
+    window.MathJax = { tex:{ inlineMath:[['$','$'],['\\(','\\)']] }, svg:{ fontCache:'global' } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Class Projects Showcase</title>
+  <title> Abrahm DeVine Computer Vision Projects </title>
   <style>
     :root{ --bg:#0f1220; --panel:#15192b; --text:#e9edf6; --muted:#a7b0c7; --brand:#4f8bff; --border:#242b42; }
     @media (prefers-color-scheme: light){ :root{ --bg:#f6f8ff; --panel:#ffffff; --text:#0d1320; --muted:#5c657a; --brand:#2563eb; --border:#e3e7f2; } }
@@ -58,8 +62,8 @@
         <div class="box">
           <h3 class="aside-title">Projects</h3>
           <nav class="project-nav" role="tablist" aria-orientation="vertical">
-            <button class="project-btn" role="tab" data-target="#p1" aria-controls="p1" aria-selected="true">Project 1</button>
-            <button class="project-btn" role="tab" data-target="#p2" aria-controls="p2" aria-selected="false">Project 2</button>
+            <button class="project-btn" role="tab" data-target="#p1" aria-controls="p1" aria-selected="true">Project 0</button>
+            <button class="project-btn" role="tab" data-target="#p2" aria-controls="p2" aria-selected="false">Project 1</button>
           </nav>
         </div>
       </aside>
@@ -68,15 +72,30 @@
       <main>
         <article id="p1" class="panel active" role="tabpanel" aria-labelledby="p1-tab" tabindex="0">
           <div class="paper">
-            <h1>CS 180 Project 1: Images of the Russian Empire</h1>
-            <p class="meta">Author • Semester • Tools: Python, NumPy, OpenCV</p>
+            <h1> Images of the Russian Empire </h1>
+            <p class="meta"> Abrahm DeVine • UC Berkeley Fall 2025 • Topics: Image Allignment, Gaussian and Laplacian Pyramids, Anti-aliasing, Normalized Cross-Correlation </p>
 
             <h2>Introduction</h2>
-            <p>Describe your goal, data sources, and a highlight result.</p>
+            <p> This project is inspired by Russian photographer Sergei Mikhailovich Prokudin-Gorskii (1863-1944) and his dream of seeing photos of Russia in color. He shot three exposures of several Russian scenes onto
+            glass plates using a red, green, and blue filter. The aim of this project is utilize Gaussian and Laplacian pyramids to align these images to create a single clear and colorful photo. As such, the constrution of a historical truth 
+            is in the hands of the computer scientist. </p>
 
             <h2>Methodology</h2>
             <h3>Single-Scale Version</h3>
-            <p>Your NCC/SSD search and windowing.</p>
+            <p> The first step was to considers metric for similarity between two photos. The black and white images only contain the brightness values accross three channels, and of course each color is not equally bright Below are lower 
+              resolution jpg images where I tested the Normalized Cross-Correlation, or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a baseline, I shifted the red and blue filtered images
+              over a range of -15 to 15 in both the x and y directions, maximizing the NCC over all possible shifts. The results were enough to confirm the of NCC as a reasonable metric and the runtime was less than a second.
+            </p>
+                 <figure class="eq">
+                     <figcaption>Normalized Cross-Correlation (NCC)</figcaption>
+                     <p>
+                      $$\mathrm{NCC}(I,J)=
+                      \frac{\sum_{x,y}\big(I(x,y)-\bar I\big)\big(J(x,y)-\bar J\big)}
+                      {\sqrt{\sum_{x,y}\big(I(x,y)-\bar I\big)^2}\,
+                      \sqrt{\sum_{x,y}\big(J(x,y)-\bar J\big)^2}} \tag{1}$$
+                    </p>
+              </figure>
+            
             <h3>Pyramid-Speedup Version</h3>
             <p>Gaussian pyramid and coarse-to-fine search.</p>
 
@@ -93,7 +112,7 @@
 
         <article id="p2" class="panel" role="tabpanel" aria-labelledby="p2-tab" tabindex="0">
           <div class="paper">
-            <h1>CS 180 Project 2: Your Title</h1>
+            <h1>CS 280A Project 0: Your Title</h1>
             <p class="meta">Author • Semester • Tools: scikit-image, Matplotlib</p>
 
             <h2>Introduction</h2>
