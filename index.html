@@ -184,8 +184,31 @@
             
             
 
-            <h2>Metrics</h2>
-            <p>Which metric you optimized and why.</p>
+            <h2>Contrast</h2>
+            <p>
+              Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly ampping them to 0 and 1 brightness intensity, thus
+              ensuring that every channel spans a full range of brightness. The result is an image with more dark and light pixels and thus more contrast. A dull, flat image for example would have a much more drastic transformation.
+              <figure class="media">
+               <img src="Project1/out_path_jpgs/ex1.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Large coconut-like object with no added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Large coconut-like object with added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex2.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Waterfall with no added contrast </figcaption>
+            </figure>
+
+            <figure class="media">
+               <img src="Project1/out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
+               <figcaption> Waterfall with added contrast </figcaption>
+            </figure>
+              
+            </p>
 
             <h2>Gallery and Results</h2>
             <p>Before/after, aligned channels, colorization.</p>
