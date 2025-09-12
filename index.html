@@ -51,7 +51,23 @@
     h1,h2,h3{scroll-margin-top:calc(var(--sticky-top) + 16px)}
     h2{margin-top:18px}
     .meta{color:var(--muted); margin:2px 0 14px}
-  </style>
+      .shell{max-width:1200px; margin:0 auto; padding:20px}
+    .layout{display:grid; grid-template-columns:260px 1fr; gap:24px}
+    .layout-3{grid-template-columns:240px 1fr 260px}
+    @media (max-width: 1000px){ .layout-3{grid-template-columns:200px 1fr} }
+    @media (max-width: 760px){ .layout-3{grid-template-columns:1fr} }
+
+    .projects,.toc{position:sticky; top:var(--sticky-top); align-self:start}
+    .box{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px}
+    .aside-title{margin:0 0 8px 0; font-size:1rem; opacity:.9}
+
+    .projlist{display:flex; flex-direction:column; gap:8px}
+    .proj-link{appearance:none; border:1px solid var(--border); background:#0000; color:var(--muted); padding:10px 12px; border-radius:10px; text-align:left; cursor:pointer; font-weight:600}
+    .proj-link[aria-selected="true"]{color:var(--text); background:rgba(90,160,255,.12); box-shadow:0 0 0 2px rgba(90,160,255,.3) inset}
+
+    .toc ul{list-style:none; padding:0; margin:0; display:grid; gap:6px}
+    .toc a{display:block; color:var(--muted); text-decoration:none; border-radius:8px; padding:6px 8px}
+    .toc a:hover{background:rgba(90,
 </head>
 <body>
   <header class="site-header">
@@ -66,16 +82,19 @@
   </header>
 
   <main class="shell">
-    <div class="layout">
-      <!-- Sidebar TOC -->
-      <aside class="toc">
+    <div class="layout layout-3">
+      <!-- LEFT: Projects nav -->
+      <aside class="projects" aria-label="Projects">
         <div class="box">
-          <h3>On this page</h3>
-          <ul id="toc-list"></ul>
+          <h3 class="aside-title">Projects</h3>
+          <nav class="projlist" role="tablist" aria-orientation="vertical">
+            <button class="proj-link" role="tab" id="tab-p1" aria-controls="panel-p1" aria-selected="true">Project 1</button>
+            <button class="proj-link" role="tab" id="tab-p2" aria-controls="panel-p2" aria-selected="false">Project 2</button>
+          </nav>
         </div>
       </aside>
 
-      <!-- Main content panels -->
+      <!-- CENTER: Main content panels -->
       <section>
         <!-- Project 1 -->
         <article id="panel-p1" class="panel active" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
@@ -126,6 +145,14 @@
           </div>
         </article>
       </section>
+
+      <!-- RIGHT: On this page (TOC) -->
+      <aside class="toc" aria-label="On this page">
+        <div class="box">
+          <h3 class="aside-title">On this page</h3>
+          <ul id="toc-list"></ul>
+        </div>
+      </aside>
     </div>
   </main>
 
@@ -182,4 +209,5 @@
   </script>
 </body>
 </html>
+
 
