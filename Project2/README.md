@@ -1,0 +1,1 @@
+To recreate the results shown in project2.html, refer to main.py. In the main method at the bottom of the file, all the function calls to reproduce the results are commented out. Simply remove the "#" for whichever part you'd like to see and run the file.
