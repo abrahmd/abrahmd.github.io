@@ -1,0 +1,200 @@
+<main class="page">
+    <style>
+        .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+        gap: 10px; /* space between images */
+        max-width: 600px;
+        margin: auto;
+        }
+        .gallery img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+        }
+        .line {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+        gap: 12px;
+        max-width: 960px;
+        margin: 2rem auto;
+        }
+        .line img {
+        width: 100%;
+        height: 400px;       /* same height for all */
+        object-fit: contain;   /* crop to fill without distortion */
+        border-radius: 8px;
+        display: block;
+        }
+    </style>
+
+    <h1> Project 3 Part 1 - Image Warping and Mosaicing </h1>
+
+    <h3> A.1 </h3> Here we see two sets photos where the transforms between them are projective. They are shot with a (reasobly) fixed center of proejction and rotation of
+    the camera.
+
+    <figure class="line">
+        <img src = "data/neighborhood/IMG_2885.jpg">
+        <img src = "data/neighborhood/IMG_2886.jpg">
+        <img src = "data/neighborhood/IMG_2887.jpg">
+    </figure>
+
+    <figure class="line">
+        <img src = "data/library/IMG_2875.jpg">
+        <img src = "data/library/IMG_2876.jpeg">
+        <img src = "data/library/IMG_2877.jpg">
+    </figure>
+
+    <h3> A.2 For each set of images, we can recover a homography between them by manually first selecting matching points between the images. For example, 
+    4 cooresponding points in the first two images in the library set above are marked below in red. A minimum of 4 points is required to calculate a homography 
+    matrix.</h3> 
+
+    <figure class="line">
+        <img src = "data/library/IMG_2875_2.jpg">
+        <img src = "data/library/IMG_2876_2.jpg">
+    </figure>
+
+    To solve for our homography matrix, we can establish a system of equations. For a single coorespondence mapping points (x,y) to (u,v), we obtain the following 
+    system of equations where h is the flattened homography matrix. With 4 point coorespondences and 8 unknowns in the homography matrix, we're able to solve for h.
+
+    <figure class="line">
+        <img src = "data/sys_eq.png">
+    </figure>
+
+    Specifically, for the two images above,
+
+    <div>
+    A = [[873, 346, 1, 0, 0, 0, -312534, -123868], <br>
+     [0, 0, 0, 873, 346, 1, -288090, -114180], <br>
+      [873, 458, 1, 0, 0, 0, -309915, -162590], <br>
+       [0, 0, 0, 873, 458, 1, -384993, -201978], <br>
+        [930, 339, 1, 0, 0, 0, -382230, -139329], <br>
+        [0, 0, 0, 930, 339, 1, -307830, -112209], <br>
+        [929, 457, 1, 0, 0, 0, -379032, -186456], <br>
+        [0, 0, 0, 929, 457, 1, -410618, -201994]] 
+    </div>
+
+    <div>
+        h = [h1, h2, h3, h4, h5, h6, h7, h8]
+    </div>
+    
+    <div>
+        b = [358, 330, 355, 441, 411, 331, 408, 442]
+    </div>
+    
+
+    <p> When we solve this system of equations, we solve </p>
+
+    <div>
+        H =[[ 2.51425309e+00 -3.55347070e-02 -1.42755447e+03] <br>
+        [ 6.20890951e-01  2.12595382e+00 -5.78868787e+02] <br>
+        [ 1.24765224e-03  6.88009940e-05  1.00000000e+00]]
+    </div>
+    
+
+    <h3>
+        A.3 With the homography matrix we can warp the images from 1 plane to another. We will do so using inverse warping to avoid holes on the output images.
+        Below are the two examples above, where the left and right image are warped to match the plane of the first. We compare the difference in warping using
+        nearest neighbor interpolation and bilinear interpolation. With the naked eye it is hard to see a difference in the methods.
+    </h3> 
+
+        Neighborhood scene with nearest neighbor interpolation:
+
+        <figure class="line">
+            <img src = "data/neighborhood/warped2885_NN.jpg">
+            <img src = "data/neighborhood/IMG_2886.jpg">
+            <img src = "data/neighborhood/warped2887_NN.jpg">
+        </figure>
+
+        Neighborhood scene with bilinear interpolation:
+
+        <figure class="line">
+            <img src = "data/neighborhood/warped2885_BL.jpg">
+            <img src = "data/neighborhood/IMG_2886.jpg">
+            <img src = "data/neighborhood/warped2887_BL.jpg">
+        </figure>
+        Library scene with nearest neighbor interpolation:
+
+        <figure class="line">
+            <img src = "data/library/warped1_NN.jpg">
+            <img src = "data/library/IMG_2876.jpeg">
+            <img src = "data/library/warped3_NN.jpg">
+        </figure>
+
+        Library scene with bilinear interpolation:
+
+        <figure class="line">
+            <img src = "data/library/warped1_BL.jpg">
+            <img src = "data/library/IMG_2876.jpeg">
+            <img src = "data/library/warped3_BL.jpg">
+        </figure>
+
+        To check this method is working prooperly, we can rectify images. For example, if we take a skewed photograph of a known rectangular object and calculate a 
+        homography for fitting it to a rectangle, we can examine the results. Here are two rectified photos, showing the homography transformation is working as expected:
+
+
+        <figure class="line">
+            <img src = "data/IMG_2910.jpg">
+            <img src = "data/rectified_photo.jpg">
+            <img src = "data/rectified_photo_copy.jpg">
+        </figure>
+        
+        <figure class="line">
+            <img src = "data/IMG_2872.jpeg">
+            <img src = "data/rectified_photo2.jpg">
+            <img src = "data/rectified_photo2_copy.jpg">
+        </figure>
+
+
+    <h3>
+        A.4 After the images can be matched to a single plane, they can be blended into a mosaic. I do this by mapping the left image into the plane of the center
+        image and creating a canvas that fits both images. The center image must be mapped to the canvas by some translation, given by T. Thus, if the left image is mapped to 
+        the center image's plane by H, it is mapped to the canvas by T @ H. A similar procedure is used to map the right image to the canvas. Furthermore, a weighted 
+        average mask is applied to each image, taking only half the information from the overlapping areas to ensure smoother blending.
+    </h3> 
+
+        <div>
+            The full library scene mosaic: <br>
+            <center>
+                <img src = 'data/library/full_blend.jpg' width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
+            </center>
+            
+        </div>
+
+        The full neighborhood mosaic: <br>
+            <center>
+                <img src = 'data/neighborhood/full_blend.jpg' width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
+            </center>
+        
+
+        And an additional Oakland scene mosaic: <br>
+
+        <center>
+            <img src = 'data/tennis/full_blend.jpg' width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
+        </center>
+        
+
+        <h3>
+            A.5 Additionally, I tried mapping images onto a cylindrical surface. This meant changing the coordinate system and diverging from linear transformations.
+            For previous mosaics, I manually created point coorespondences which were used to create a homography matrix. This matrix was no longer useful in the
+            cylindrical coordinate system. After translating both images into cylindrical coordinates, I tried to estimate a translation by translating the original 
+            2D coorespondences into cylindrical coordinates, finding a median translation, and translating two images. However, the resulting images are not as 
+            convincing as the 2D mosaics. Some example results of two images are below.
+        </h3> 
+
+        Here is image 1 in cylindrical coordinates, image 2 in cylindrical coordinates, and a blend of the two images.
+        <figure class="line">
+            <img src = "data/library/cylinderim1.jpg">
+            <img src = "data/library/cylinderim2.jpg">
+            <img src = "data/library/cylinderblend.jpg">
+        </figure>
+
+        Here is another example.
+        <figure class="line">
+            <img src = "data/neighborhood/cylinderim1.jpg">
+            <img src = "data/neighborhood/cylinderim2.jpg">
+            <img src = "data/neighborhood/cylinderblend.jpg">
+        </figure>
+
+    
+</main>
