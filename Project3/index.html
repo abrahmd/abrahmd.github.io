@@ -1,66 +1,179 @@
-<main class="page">
-    <style>
-        .gallery {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columns */
-        gap: 10px; /* space between images */
-        max-width: 600px;
-        margin: auto;
-        }
-        .gallery img {
-        width: 100%;
-        height: auto;
-        border-radius: 6px;
-        }
-        .line {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 images per row */
-        gap: 12px;
-        max-width: 960px;
-        margin: 2rem auto;
-        }
-        .line img {
-        width: 100%;
-        height: 400px;       /* same height for all */
-        object-fit: contain;   /* crop to fill without distortion */
-        border-radius: 8px;
-        display: block;
-        }
-        .line2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 images per row */
-        gap: 12px;
-        max-width: 1700px;
-        margin: 2rem auto;
-        }
-        .line2 img {
-        width: 100%;
-        height: 100%;       /* same height for all */
-        object-fit: contain;   /* crop to fill without distortion */
-        border-radius: 8px;
-        display: block;
-        }
-        .line4 {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 2 images per row */
-        gap: 12px;
-        max-width: 600px;
-        margin: 2rem auto;
-        }
-        .pixel-patch {
-        /* turn off smoothing */
-        image-rendering: pixelated;     /* modern browsers */
-        image-rendering: crisp-edges;   /* fallback */
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Warping and Mosaicing</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .line {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 960px;
+      margin: 2rem auto;
+    }
+    .line img {
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .line2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 1700px;
+      margin: 2rem auto;
+    }
+    .line2 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .line4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    .pixel-patch {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      width: 128px;
+      height: 128px;
+    }
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content h3 {
+      margin: 24px 0 12px 0;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      font-weight: normal;
+    }
+    .page-content h3 strong {
+      font-weight: 700;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page-content div {
+      margin: 12px 0;
+      color: var(--text);
+      line-height: 1.55;
+      font-family: ui-monospace, monospace;
+      font-size: 0.9rem;
+    }
+    figure {
+      margin: 24px 0;
+    }
+    figure figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+    figure.line figcaption,
+    figure.line2 figcaption,
+    figure.line4 figcaption {
+      grid-column: 1 / -1;
+      text-align: center;
+      width: 100%;
+    }
+    center {
+      text-align: center;
+      margin: 24px 0;
+    }
+    center img {
+      max-width: 100%;
+      height: auto;
+    }
+    .page-content img {
+      display: block;
+      margin: 24px auto;
+      max-width: 100%;
+      height: auto;
+    }
+    figure.gallery img,
+    figure.line img,
+    figure.line2 img,
+    figure.line4 img,
+    .gallery img,
+    .line img,
+    .line2 img,
+    .line4 img {
+      margin: 0;
+    }
+    figure.gallery,
+    figure.line,
+    figure.line2,
+    figure.line4 {
+      text-align: center;
+    }
+  </style>
+</head>
 
-        /* make sure you scale by an integer multiple */
-        width: 128px;   /* 8 * 16 */
-        height: 128px;
-        }
-    </style>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-    <h1> Project 3 Part 1 - Image Warping and Mosaicing </h1>
+  <main class="container">
+    <div class="page-content">
+      <h1>Project 3 Part 1 - Image Warping and Mosaicing</h1>
 
-    <h3> A.1 </h3> Here we see two sets photos where the transforms between them are projective. They are shot with a (reasobly) fixed center of proejction and rotation of
+      <article>
+
+    <h3><strong>A.1</strong></h3> Here we see two sets of photos where the transforms between them are projective. They are shot with a (reasonably) fixed center of projection and rotation of
     the camera.
 
     <figure class="line">
@@ -75,58 +188,64 @@
         <img src = "data/library/IMG_2877.jpg">
     </figure>
 
-    <h3> A.2 For each set of images, we can recover a homography between them by manually first selecting matching points between the images. For example, 
-    4 cooresponding points in the first two images in the library set above are marked below in red. A minimum of 4 points is required to calculate a homography 
-    matrix.</h3> 
+    <h3><strong>A.2</strong></h3> For each set of images, we can recover a homography between them by manually first selecting matching points between the images. For example, 
+    4 corresponding points in the first two images in the library set above are marked below in red. A minimum of 4 points is required to calculate a homography 
+    matrix. 
 
     <figure class="line">
         <img src = "data/library/IMG_2875_2.jpg">
         <img src = "data/library/IMG_2876_2.jpg">
     </figure>
 
-    To solve for our homography matrix, we can establish a system of equations. For a single coorespondence mapping points (x,y) to (u,v), we obtain the following 
-    system of equations where h is the flattened homography matrix. With 4 point coorespondences and 8 unknowns in the homography matrix, we're able to solve for h.
+    To solve for our homography matrix, we can establish a system of equations. For a single correspondence mapping points \( (x,y) \) to \( (u,v) \), we obtain the following 
+    system of equations where \( \mathbf{h} \) is the flattened homography matrix. With 4 point correspondences and 8 unknowns in the homography matrix, we're able to solve for \( \mathbf{h} \). The system has the form \( \mathbf{A}\mathbf{h} = \mathbf{b} \).
 
-    <figure class="line">
-        <img src = "data/sys_eq.png">
-    </figure>
+    <center>
+        <figure>
+            <img src = "data/sys_eq.png" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
+        </figure>
+    </center>
 
     Specifically, for the two images above,
 
-    <div>
-    A = [[873, 346, 1, 0, 0, 0, -312534, -123868], <br>
-     [0, 0, 0, 873, 346, 1, -288090, -114180], <br>
-      [873, 458, 1, 0, 0, 0, -309915, -162590], <br>
-       [0, 0, 0, 873, 458, 1, -384993, -201978], <br>
-        [930, 339, 1, 0, 0, 0, -382230, -139329], <br>
-        [0, 0, 0, 930, 339, 1, -307830, -112209], <br>
-        [929, 457, 1, 0, 0, 0, -379032, -186456], <br>
-        [0, 0, 0, 929, 457, 1, -410618, -201994]] 
-    </div>
+    \[
+    \mathbf{A} = \begin{bmatrix}
+    873 & 346 & 1 & 0 & 0 & 0 & -312534 & -123868 \\
+    0 & 0 & 0 & 873 & 346 & 1 & -288090 & -114180 \\
+    873 & 458 & 1 & 0 & 0 & 0 & -309915 & -162590 \\
+    0 & 0 & 0 & 873 & 458 & 1 & -384993 & -201978 \\
+    930 & 339 & 1 & 0 & 0 & 0 & -382230 & -139329 \\
+    0 & 0 & 0 & 930 & 339 & 1 & -307830 & -112209 \\
+    929 & 457 & 1 & 0 & 0 & 0 & -379032 & -186456 \\
+    0 & 0 & 0 & 929 & 457 & 1 & -410618 & -201994
+    \end{bmatrix}
+    \]
 
-    <div>
-        h = [h1, h2, h3, h4, h5, h6, h7, h8]
-    </div>
+    \[
+    \mathbf{h} = \begin{bmatrix} h_1 & h_2 & h_3 & h_4 & h_5 & h_6 & h_7 & h_8 \end{bmatrix}^T
+    \]
     
-    <div>
-        b = [358, 330, 355, 441, 411, 331, 408, 442]
-    </div>
+    \[
+    \mathbf{b} = \begin{bmatrix} 358 & 330 & 355 & 441 & 411 & 331 & 408 & 442 \end{bmatrix}^T
+    \]
     
 
     <p> When we solve this system of equations, we solve </p>
 
-    <div>
-        H =[[ 2.51425309e+00 -3.55347070e-02 -1.42755447e+03] <br>
-        [ 6.20890951e-01  2.12595382e+00 -5.78868787e+02] <br>
-        [ 1.24765224e-03  6.88009940e-05  1.00000000e+00]]
-    </div>
+    \[
+    \mathbf{H} = \begin{bmatrix}
+    2.51425309 & -0.035534707 & -1427.55447 \\
+    0.620890951 & 2.12595382 & -578.868787 \\
+    0.00124765224 & 0.000068800994 & 1.0
+    \end{bmatrix}
+    \]
     
 
     <h3>
-        A.3 With the homography matrix we can warp the images from 1 plane to another. We will do so using inverse warping to avoid holes on the output images.
+        <strong>A.3</strong></h3>  With the homography matrix we can warp the images from 1 plane to another. We will do so using inverse warping to avoid holes on the output images.
         Below are the two examples above, where the left and right image are warped to match the plane of the first. We compare the difference in warping using
         nearest neighbor interpolation and bilinear interpolation. With the naked eye it is hard to see a difference in the methods.
-    </h3> 
+    
 
         Neighborhood scene with nearest neighbor interpolation:
 
@@ -159,7 +278,7 @@
             <img src = "data/library/warped3_BL.jpg">
         </figure>
 
-        To check this method is working prooperly, we can rectify images. For example, if we take a skewed photograph of a known rectangular object and calculate a 
+        To check this method is working properly, we can rectify images. For example, if we take a skewed photograph of a known rectangular object and calculate a 
         homography for fitting it to a rectangle, we can examine the results. Here are two rectified photos, showing the homography transformation is working as expected:
 
 
@@ -176,12 +295,11 @@
         </figure>
 
 
-    <h3>
-        A.4 After the images can be matched to a single plane, they can be blended into a mosaic. I do this by mapping the left image into the plane of the center
-        image and creating a canvas that fits both images. The center image must be mapped to the canvas by some translation, given by T. Thus, if the left image is mapped to 
-        the center image's plane by H, it is mapped to the canvas by T @ H. A similar procedure is used to map the right image to the canvas. Furthermore, a weighted 
+    <h3> <strong>A.4</strong> </h3>  After the images can be matched to a single plane, they can be blended into a mosaic. I do this by mapping the left image into the plane of the center
+        image and creating a canvas that fits both images. The center image must be mapped to the canvas by some translation, given by \( \mathbf{T} \). Thus, if the left image is mapped to 
+        the center image's plane by \( \mathbf{H} \), it is mapped to the canvas by \( \mathbf{T}\mathbf{H} \). A similar procedure is used to map the right image to the canvas. Furthermore, a weighted 
         average mask is applied to each image, taking only half the information from the overlapping areas to ensure smoother blending.
-    </h3> 
+    
 
         <div>
             The full library scene mosaic: <br>
@@ -205,12 +323,12 @@
         
 
         <h3>
-            A.5 Additionally, I tried mapping images onto a cylindrical surface. This meant changing the coordinate system and diverging from linear transformations.
-            For previous mosaics, I manually created point coorespondences which were used to create a homography matrix. This matrix was no longer useful in the
+            <strong>A.5</strong></h3> Additionally, I tried mapping images onto a cylindrical surface. This meant changing the coordinate system and diverging from linear transformations.
+            For previous mosaics, I manually created point correspondences which were used to create a homography matrix. This matrix was no longer useful in the
             cylindrical coordinate system. After translating both images into cylindrical coordinates, I tried to estimate a translation by translating the original 
-            2D coorespondences into cylindrical coordinates, finding a median translation, and translating two images. However, the resulting images are not as 
+            2D correspondences into cylindrical coordinates, finding a median translation, and translating two images. However, the resulting images are not as 
             convincing as the 2D mosaics. Some example results of two images are below.
-        </h3> 
+         
 
         Here is image 1 in cylindrical coordinates, image 2 in cylindrical coordinates, and a blend of the two images.
         <figure class="line">
@@ -228,11 +346,11 @@
 
 
         <h3>
-            B.1 
-        </h3> When we take an image an visualize the detected Harris corners, we compute a Harris score R = det(M)/trace(M) for each pixel, where M is the second-moment tensor around
+            <strong>B.1</strong>
+        </h3> When we take an image and visualize the detected Harris corners, we compute a Harris score \( R = \frac{\det(\mathbf{M})}{\text{trace}(\mathbf{M})} \) for each pixel, where \( \mathbf{M} \) is the second-moment tensor around
         the pixel. We then take a subset of these pixels with a local maximum from skimage.feature.peak_local_max with min_distance=10 to decrease runtime for the 
-        adaptive non-maximal supporession algorithm, which computes the minimal suppresion radius for each of these points. When we choose the 500 points with the 
-        largest supression radius, we acheive our points of interest, visualized below next to the original photo. The photo on the right shows the top 100 points 
+        adaptive non-maximal suppression algorithm, which computes the minimal suppression radius for each of these points. When we choose the 500 points with the 
+        largest suppression radius, we achieve our points of interest, visualized below next to the original photo. The photo on the right shows the top 100 points 
         with the largest suppression radius.
         
 
@@ -243,14 +361,14 @@
         </figure>
 
         
-        It is nice to see that many of the points coorespond to the types of features a human would manually select, ie they are often actual corners. For instance,
+        It is nice to see that many of the points correspond to the types of features a human would manually select, i.e., they are often actual corners. For instance,
         it clearly marks the four corners of the framed photo in the background, the tip of the lamp, the tip of the glasses, and corners in the chair design. 
         
-        <h3> B.2 </h3> We can now consider the features points of interest by trying to extract them. I continue in black and white images for simplicity. 
-        From the original photo (shown again below in black and white), we can downsample by a factor of 2 to create a blurred image, where we sample an 8x8
-        patch of pixels around each (downsampled) interest point. This is roughly equivalent to sampling a 40x40 window using a spacing of 5. The resulting blurry
-        feature patch is more robust against aliasing. We then normalise this patch so the mean is 0 and the standard deviation is 1, making the features invariant
-        to changes in intensity. Below is the original image marked with the locations of 15 8x8 example feature descriptors, with the feature descriptors below.
+        <h3><strong>B.2</strong></h3> We can now consider the feature points of interest by trying to extract them. I continue in black and white images for simplicity. 
+        From the original photo (shown again below in black and white), we can downsample by a factor of 2 to create a blurred image, where we sample an \( 8 \times 8 \)
+        patch of pixels around each (downsampled) interest point. This is roughly equivalent to sampling a \( 40 \times 40 \) window using a spacing of 5. The resulting blurry
+        feature patch is more robust against aliasing. We then normalize this patch so the mean is 0 and the standard deviation is 1, making the features invariant
+        to changes in intensity. Below is the original image marked with the locations of 15 \( 8 \times 8 \) example feature descriptors, with the feature descriptors below.
 
         <center>
             <img src = "data/studying/IMG_2932_nums.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
@@ -292,52 +410,52 @@
             <figcaption> Feature descriptors 12, 13, and 14 </figcaption>
         </figure>
 
-        <h3> B.3 </h3> Now that we have extracted interesting features, we can match them based on Lowe's thresholding technique between first and second nearest neighbors.
+        <h3><strong>B.3</strong></h3> Now that we have extracted interesting features, we can match them based on Lowe's thresholding technique between first and second nearest neighbors.
         First, we calculate the L2 distance between feature patches in image 1 and all other patches in image 2. In doing so we determine the closest and second closest
-        match, which we refer to has nearest neighbor 1 and nearest neighbor 2. We determine whether this is a reasonable match by thresholding the ratio of NN1/NN2. A small 
-        ratio indicates a potential match, whereas ratio close to 1 indicates the distances are too similar and thus generic. Below we match points in two images based on
+        match, which we refer to as nearest neighbor 1 and nearest neighbor 2. We determine whether this is a reasonable match by thresholding the ratio \( \frac{\text{NN1}}{\text{NN2}} \). A small 
+        ratio indicates a potential match, whereas a ratio close to 1 indicates the distances are too similar and thus generic. Below we match points in two images based on
         different three threshold levels. As you can see, a high threshold allows more incorrect matches through, while a low threshold maintains fewer yet correct
         point matches.
 
         <center>
             <figure>
                 <img src = "data/neighborhood/matchT8.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
-                <figcaption> Two images matched with a threshold T=0.8 </figcaption>
+                <figcaption> Two images matched with a threshold \( T = 0.8 \) </figcaption>
             </figure>
         </center>
 
         <center>
             <figure>
                 <img src = "data/neighborhood/matchT5.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
-                <figcaption> Two images matched with a threshold T=0.5 </figcaption>
+                <figcaption> Two images matched with a threshold \( T = 0.5 \) </figcaption>
             </figure>
         </center>
 
         <center>
             <figure>
                 <img src = "data/neighborhood/matchT2.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
-                <figcaption> Two images matched with a threshold T=0.2 </figcaption>
+                <figcaption> Two images matched with a threshold \( T = 0.2 \) </figcaption>
             </figure>
         </center>
 
-        Below are two more example image pairs, matched with T=0.35.
+        Below are two more example image pairs, matched with \( T = 0.35 \).
 
         <center>
             <figure>
                 <img src = "data/tennis/match.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
-                <figcaption> Two images matched with a threshold T=0.35 </figcaption>
+                <figcaption> Two images matched with a threshold \( T = 0.35 \) </figcaption>
             </figure>
         </center>
 
         <center>
             <figure>
                 <img src = "data/library/match.jpg" width="1200" height="800" style="max-width: 100%; height: auto;"> <br>
-                <figcaption> Two images matched with a threshold T=0.35 </figcaption>
+                <figcaption> Two images matched with a threshold \( T = 0.35 \) </figcaption>
             </figure>
         </center>
 
-        <h3> B.4 </h3> To remove outliers from sets of feature matches, I implemented the RANSAC algorithm and computed the homography from the best set of inliers.
-        I used a threshold of t=0.35 and 1000 iterations of RANSAC. Then, using these new homography matricies, recomputed the mosaics from part A.4 above. The 
+        <h3><strong>B.4</strong></h3> To remove outliers from sets of feature matches, I implemented the RANSAC algorithm and computed the homography from the best set of inliers.
+        I used a threshold of \( t = 0.35 \) and 1000 iterations of RANSAC. Then, using these new homography matrices, recomputed the mosaics from part A.4 above. The 
         results are below.
 
         <center>
@@ -371,17 +489,17 @@
             </figure>
         </center>
 
-        <h3> B.5 </h3> These mosaics come together reasonably well due to minimal rotation between photos, making matching features appear nearly identical in 
+        <h3><strong>B.5</strong></h3> These mosaics come together reasonably well due to minimal rotation between photos, making matching features appear nearly identical in 
         the feature descriptor space. However, it is ideal to have a feature matcher that can identify features no matter how they are oriented relative to 
-        each other in two different photos. To implement this, I create a Gaussian weighted gradient orientation histogram around points of interest (at pyramid
-        level 1) to determine the direction of strongest change. Then, I rotate the 8x8 patch by the negation of this angle, resulting in an axis
+        each other in two different photos.         To implement this, I create a Gaussian weighted gradient orientation histogram around points of interest (at pyramid
+        level 1) to determine the direction of strongest change. Then, I rotate the \( 8 \times 8 \) patch by the negation of this angle, resulting in an axis
         aligned feature descriptor. The same feature rotated at a different angle (in another photo) will thus be aligned with this one after it is processed, making
         feature matching less variable to rotations. Below are some examples of rotation invariant feature descriptors compared to the non-rotated original
         descriptor. 
         
         <p>
-            Each row was matched based on rotation invariant descriptors. Each row is in the order: rotated descriptor from image 1, rotated descriptor from image 2, orginal descriptor from image 1, orginal descriptor from image 2.
-            Evidently, the rotation not only creates new alignments and possibilties for feature matching, but a consistant orientation for rotations of the same descriptor.
+            Each row was matched based on rotation invariant descriptors. Each row is in the order: rotated descriptor from image 1, rotated descriptor from image 2, original descriptor from image 1, original descriptor from image 2.
+            Evidently, the rotation not only creates new alignments and possibilities for feature matching, but a consistent orientation for rotations of the same descriptor.
         </p>
         <figure class="line4">
             <img src='data/library/rot14_1.jpg' class="pixel-patch">
@@ -417,4 +535,25 @@
             <img src = "data/library/rot231_3.jpg" class="pixel-patch">
             <img src = "data/library/rot231_4.jpg" class="pixel-patch">
         </figure>
-</main>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span><span id="year"></span> Abrahm DeVine</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

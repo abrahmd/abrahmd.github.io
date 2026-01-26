@@ -1,167 +1,277 @@
-div class="paper">
-            <h1> Images of the Russian Empire </h1>
-            <p class="meta"> UC Berkeley Fall 2025 • Topics: Image Allignment, Gaussian and Laplacian Pyramids, Anti-aliasing, Normalized Cross-Correlation </p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Images of the Russian Empire</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content h3 {
+      margin: 24px 0 12px 0;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-meta .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    figure.media {
+      margin: 24px auto;
+      max-width: 600px;
+      text-align: center;
+    }
+    figure.media img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    figure.media figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .page-content img {
+      display: block;
+      margin: 24px auto;
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
 
-            <h2>Introduction</h2>
-            <p> This project is inspired by Russian photographer Sergei Mikhailovich Prokudin-Gorskii (1863-1944) and his dream of seeing photos of Russia in color. He shot three exposures of several Russian scenes onto
-            glass plates using a red, green, and blue filter. The aim of this project is utilize Gaussian and Laplacian pyramids to align these images to create a single clear and colorful photo. As such, the constrution of a historical truth 
-            is in the hands of the computer scientist. </p>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-            <h2>Methodology</h2>
-            <h3>Single-Scale Version</h3>
-            <p> The first step was to considers metric for similarity between two photos. The black and white images only contain the brightness values accross three channels, and of course each color is not equally bright. Below are lower 
-              resolution jpg images where I tested the Normalized Cross-Correlation, or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a static reference, I shifted (np.roll()) every pixel in the red and blue filtered images
-              over a range of -15 to 15 in both the x and y directions, maximizing the NCC of the shifted image and the green image over all possible shifts. The results, shown below, were sufficiently aligned to confirm the of NCC as a reasonable metric and the runtime was less than a second.
-            </p>
-                 
-            <figure class="media">
-               <img src="out_path_jpgs/cathedral.jpg.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Reconstructed color jpg cathedral image, reconstructed by shifting the red filtered image (7,1) for axis=(0,1) and the blue filtered image (-5,-2) for axis=(0,1). </figcaption>
-            </figure>
+  <main class="container">
+    <div class="page-content">
+      <h1>Images of the Russian Empire</h1>
 
-            <figure class="media">
-               <img src="out_path_jpgs/monastery.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Color jpg Monastery image, reconstructed by shifting the red filtered image (6, 1) for axis=(0,1) and the blue image (3, -2) for axis=(0,1).  </figcaption>
-            </figure>
+      <div class="page-meta">
+        <p class="meta">UC Berkeley Fall 2025 • Topics: Image Alignment, Gaussian and Laplacian Pyramids, Anti-aliasing, Normalized Cross-Correlation</p>
+      </div>
 
-            <figure class="media">
-               <img src="out_path_jpgs/tobolsk.jpg.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Color jpg Tobolsk image, reconstructed by shifting the red filtered image (4,1) for axis=(0,1) and the blue filtered image (-3,-3) for axis=(0,1). </figcaption>
-            </figure>
+      <article>
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p>This project is inspired by Russian photographer Sergei Mikhailovich Prokudin-Gorskii (1863-1944) and his dream of seeing photos of Russia in color. He shot three exposures of several Russian scenes onto
+          glass plates using a red, green, and blue filter. The aim of this project is utilize Gaussian and Laplacian pyramids to align these images to create a single clear and colorful photo. As such, the construction of a historical truth 
+          is in the hands of the computer scientist.</p>
+        </section>
 
+        <section id="methodology">
+          <h2>Methodology</h2>
+          <h3>Single-Scale Version</h3>
+          <p>The first step was to consider a metric for similarity between two photos. The black and white images only contain the brightness values across three channels, and of course each color is not equally bright. Below are lower 
+            resolution jpg images where I tested the Normalized Cross-Correlation, or the normalized dot product between two images, as a reliable metric. Using the green filtered image as a static reference, I shifted (np.roll()) every pixel in the red and blue filtered images
+            over a range of -15 to 15 in both the x and y directions, maximizing the NCC of the shifted image and the green image over all possible shifts. The results, shown below, were sufficiently aligned to confirm the NCC as a reasonable metric and the runtime was less than a second.
+          </p>
+               
+          <figure class="media">
+            <img src="out_path_jpgs/cathedral.jpg.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Reconstructed color jpg cathedral image, reconstructed by shifting the red filtered image (7,1) for axis=(0,1) and the blue filtered image (-5,-2) for axis=(0,1).</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/monastery.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Color jpg Monastery image, reconstructed by shifting the red filtered image (6, 1) for axis=(0,1) and the blue image (3, -2) for axis=(0,1).</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/tobolsk.jpg.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Color jpg Tobolsk image, reconstructed by shifting the red filtered image (4,1) for axis=(0,1) and the blue filtered image (-3,-3) for axis=(0,1).</figcaption>
+          </figure>
+
+          <h3>Tackling High-Res Images with Pyramid-Speedup</h3>
+          <p>For higher-resolution images, a 15x15 pixel window is not sufficient to align images properly and a larger window becomes increasingly computationally expensive. By creating a Gaussian pyramid, this same exhaustive search can be 
+            performed on a smaller image with an even smaller window to search. Small shifts in downsampled images translate to larger shifts in the original large image relative to the downsizing factor, in this case 2. In my implementation, I searched an 8x8 pixel window at each level of 
+            the pyramid, which proved to be sufficient at aligning the images properly and in roughly 15 seconds per image. This parameter could potentially be smaller and/or decreased while traversing the pyramid. I also tried the 
+            same implementation on a Laplacian pyramid, but the Gaussian pyramid implementation slightly outperformed (higher NCC score) the Laplacian for all images.
+          </p>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_church.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Church. Red shift=(33,-7) for axis=(0,1) and NCC score 0.82. Blue shift = (-25,0) for axis(0,1) and NCC score 0.85.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_emir.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Emir. Red shift=(57,17) for axis=(0,1) and NCC score 0.69. Blue shift = (-49,-24) for axis(0,1) and NCC score 0.67.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_harvesters.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Harvesters Red shift=(65,-3) for axis=(0,1) and NCC score 0.85. Blue shift = (-60,-17) for axis(0,1) and NCC score 0.79.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_icon.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Icon Red shift=(48,5) for axis=(0,1) and NCC score 0.88. Blue shift = (-40,-17) for axis(0,1) and NCC score 0.77.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_lugano.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Lugano Red shift=(52,-12) for axis=(0,1) and NCC score 0.92. Blue shift = (-41,16) for axis(0,1) and NCC score 0.82.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_melons.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Melons Red shift=(96,3) for axis=(0,1) and NCC score 0.94. Blue shift = (-82,-9) for axis(0,1) and NCC score 0.87.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_self_portrait.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Self Portrait Red shift=(98,8) for axis=(0,1) and NCC score 0.70. Blue shift = (-78,-28) for axis(0,1) and NCC score 0.71.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_siren.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Siren Red shift=(46,-18) for axis=(0,1) and NCC score 0.85. Blue shift = (-49,7) for axis(0,1) and NCC score 0.82.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/Laplace_three_generations.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Three Generations Red shift=(58,-1) for axis=(0,1) and NCC score 0.93. Blue shift = (-54,-11) for axis(0,1) and NCC score 0.86.</figcaption>
+          </figure>
+        </section>
+
+        <section id="contrast">
+          <h2>Contrast</h2>
+          <p>
+            Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly mapping them to 0 and 1 brightness intensity, thus
+            ensuring that every channel spans a full range of brightness. The result is an image with more dark and light pixels and thus more contrast. A dull, flat image for example would have a much more drastic transformation.
+          </p>
             
+          <figure class="media">
+            <img src="out_path_jpgs/ex1.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Large coconut-like object with no added contrast</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Large coconut-like object with added contrast</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/ex2.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Waterfall with no added contrast</figcaption>
+          </figure>
+
+          <figure class="media">
+            <img src="out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Waterfall with added contrast</figcaption>
+          </figure>
+        </section>
+
+        <section id="white-balance">
+          <h2>Automatic white balance - shift to grey</h2>
+          <p>
+            Below are the same two images with an additional white balancing added to them. This feature works by finding the mean of each color channel and then multiplying each channel by some value such that their means are all equal, thus
+            making each color equally intense on average. This is an assumption that I do not think is fair to make in most lighting conditions, and in these two photos it adds an unnatural looking saturation effect.
+          </p>
             
-            <h3> Tackling High-Res Images with Pyramid-Speedup </h3>
-            <p> For higher-resolution images, a 15x15 pixel window is not sufficient to allign images properly and a larger window becomes increasingly computationally expensive. By creating a Gaussian pyramid, this same exhausted search can be 
-              performed on a smaller image with an even smaller window to search. Small shifts in downsampled images translate to larger shifts in the original large image relative to the downsizing factor, in this case 2. In my implementation, I searched an 8x8 pixel window at each level of 
-              the pyramid, which proved to be sufficient at aligning the images properly and in roughly 15 seconds per image. This parameter could potentially be smaller and/or decreased while traversing the pyramid. I also tried the 
-              same implementation on a Laplacian pyramid, but the Gauassian pyramid imlementation slightly outperformed (higher NCC score) the Laplacian for all images.
-              </p>
+          <figure class="media">
+            <img src="out_path_jpgs/ex1.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Large coconut-like object with no added contrast</figcaption>
+          </figure>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_church.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Church. Red shift=(33,-7) for axis=(0,1) and NCC score 0.82. Blue shift = (-25,0) for axis(0,1) and NCC score 0.85. </figcaption>
-            </figure>
+          <figure class="media">
+            <img src="out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Large coconut-like object with added contrast</figcaption>
+          </figure>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_emir.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Emir. Red shift=(57,17) for axis=(0,1) and NCC score 0.69. Blue shift = (-49,-24) for axis(0,1) and NCC score 0.67. </figcaption>
-            </figure>
+          <figure class="media">
+            <img src="out_path_jpgs/ex2.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Waterfall with no added contrast</figcaption>
+          </figure>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_harvesters.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Harvesters Red shift=(65,-3) for axis=(0,1) and NCC score 0.85. Blue shift = (-60,-17) for axis(0,1) and NCC score 0.79. </figcaption>
-            </figure>
+          <figure class="media">
+            <img src="out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Waterfall with added contrast</figcaption>
+          </figure>
+        </section>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_icon.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Icon Red shift=(48,5) for axis=(0,1) and NCC score 0.88. Blue shift = (-40,-17) for axis(0,1) and NCC score 0.77. </figcaption>
-            </figure>
+        <section id="gradient-alignment">
+          <h2>Gradient based alignment</h2>
+          <p>Rather than assume color channels should be equal for alignment (which, based on the saturation that occurs in the white balancing above, is not a good assumption), we can change our features and consider instead the NCC score of the gradients and thus
+            the change in color. This has more potential to align shadows and natural changes in light that affect all colors, and should work better on images that contain a lot of red, green or blue. However, when I ran my implementation,
+            the results were surprisingly worse than the original implementation.
+          </p>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_lugano.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Lugano Red shift=(52,-12) for axis=(0,1) and NCC score 0.92. Blue shift = (-41,16) for axis(0,1) and NCC score 0.82. </figcaption>
-            </figure>
+          <figure class="media">
+            <img src="out_path_jpgs/church_gradient.jpg" alt="Reconstructed color image" loading="lazy" decoding="async">
+            <figcaption>Church aligned by the NCC score of the gradients. Red shift=(33,-8) for axis=(0,1) and NCC score 0.82. Blue shift = (-25,-4) for axis=(0,1) and NCC score 0.84. Compared with the original Church image above, 
+            this set up underperforms slightly. To the naked eye, it is hardly distinguishable.</figcaption>
+          </figure>
+        </section>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_melons.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Melons Red shift=(96,3) for axis=(0,1) and NCC score 0.94. Blue shift = (-82,-9) for axis(0,1) and NCC score 0.87. </figcaption>
-            </figure>
+        <section id="automatic-cropping">
+          <h2>Automatic cropping</h2>
+          <p>For this task, I attempted to detect lines at the borders of the complete rgb image. Visually, these lines appear black, red, green, or blue (or the inverse of rgb). I expected to find entire rows or columns to have all channels 
+            below some threshold (black borders), have one channel below some threshold (inverse rgb borders), or have two channels below a threshold (rgb borders). However, I was unable to get this approach up and running successfully. Perhaps an
+            alternate approach or a bug-free implementation is required. I instead employed an automatic crop of 5% off each edge before aligning the images with the hope that this would not only cause better alignment but reduce left over
+            borders. Regardless, most of the images aligned have some sort of irregular border that I think holds its own beauty and nostalgia for vintage aesthetics and the imperfection of film photographs. After all, no matter how many modern
+            tricks we can apply to images, there remains an impossibility of grasping truth. The image will always be a ghostly and artificial attempt at capturing what is already lost or creating what was never there to begin with.
+          </p>
+        </section>
+      </article>
+    </div>
+  </main>
 
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_self_portrait.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Self Portrait Red shift=(98,8) for axis=(0,1) and NCC score 0.70. Blue shift = (-78,-28) for axis(0,1) and NCC score 0.71. </figcaption>
-            </figure>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span><span id="year"></span> Abrahm DeVine</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_siren.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Siren Red shift=(46,-18) for axis=(0,1) and NCC score 0.85. Blue shift = (-49,7) for axis(0,1) and NCC score 0.82. </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/Laplace_three_generations.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Three Generations Red shift=(58,-1) for axis=(0,1) and NCC score 0.93. Blue shift = (-54,-11) for axis(0,1) and NCC score 0.86. </figcaption>
-            </figure>
-            
-            
-            
-
-            <h2>Contrast</h2>
-            <p>
-              Below are two interesting images both with and without added contrast. The added contrast function works by taking high and low percentiles for each channel and linearly mapping them to 0 and 1 brightness intensity, thus
-              ensuring that every channel spans a full range of brightness. The result is an image with more dark and light pixels and thus more contrast. A dull, flat image for example would have a much more drastic transformation.
-              
-              <figure class="media">
-               <img src="out_path_jpgs/ex1.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Large coconut-like object with no added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Large coconut-like object with added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex2.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Waterfall with no added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Waterfall with added contrast </figcaption>
-            </figure>
-              
-            </p>
-
-            <h2> Automatic white balance - shift to grey </h2>
-            <p>
-
-              Below are the same two images with an additional white balancing added to them. This feature works by finding the mean of each color channel and then multiplying each channel by some value such that their means are all equal, thus
-              making each color equally intense on average. This is an assumption that I do not think is fair to make in most lighting conditions, and in these two photos it adds an unnatural looking saturation effect.
-              
-              <figure class="media">
-               <img src="out_path_jpgs/ex1.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Large coconut-like object with no added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex1_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Large coconut-like object with added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex2.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Waterfall with no added contrast </figcaption>
-            </figure>
-
-            <figure class="media">
-               <img src="out_path_jpgs/ex2_contrast.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Waterfall with added contrast </figcaption>
-            </figure>
-                
-            </p>
-
-            <h2> Gradient based alignment </h2>
-            <p> Rather than assume color channels should be equal for alignment (which, based on the saturation that occurs in the white balancing above, is not a good assumption), we can change our features and consider instead the NCC score of the gradients and thus
-              the change in color. This has more potential to align shadows and natural changes in light that affect all colors, and should work better on images that contain a lot of red, green or blue. However, when I ran my implementation,
-              the results were surprisingly worse than the original implementation. 
-
-              <figure class="media">
-               <img src="out_path_jpgs/church_gradient.jpg" alt="Reconstructed color image" width="350" height="320" loading="lazy" decoding="async">
-               <figcaption> Church aligned by the NCC score of the gradients. Red shift=(33,-8) for axis=(0,1) and NCC score 0.82. Blue shift = (-25,-4) for axis=(0,1) and NCC score 0.84.  Compared with the original Church image above, 
-               this set up underperforms slightly. To the naked eye, it hardly distinguishable. </figcaption>
-            </figure>
-              
-            </p>
-
-            <h2> Automatic cropping </h2>
-            <p> For this task, I attempted to detect lines at the borders of the complete rgb image. Visually, these lines appear black, red, green, or blue (or the inverse of rgb). I expected to find entire rows or columns to have all channels 
-              below some threshold (black borders), have one channel below some threshold (inverse rgb borders), or have two channels below a threshold (rgb borders). However, I was unable to get this approach up and running succesfully. Perhaps an
-              alternate approach or a bug-free implementation is required. I instead employed an automatic crop of 5% off each edge before aligning the images with the hope that this would not only cause better alignment but reduce left over
-              borders. Regardless, most of the images alligned have some sort of irregular border that I think holds its own beauty and nostalgia for vintage aesthetics and the imperfection of film photographs. After all, no matter how many modern
-              tricks we can apply to images, there remains an impossibility of grasping truth. The image will always be a ghostly and artificial attempt at capturing what is already lost or creating what was never there to begin with. 
-
-              
-            </p>
-</div>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -1,43 +1,140 @@
-<main class="page">
-    <style>
-        .gallery {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columns */
-        gap: 10px; /* space between images */
-        max-width: 600px;
-        margin: auto;
-        }
-        .gallery img {
-        width: 100%;
-        height: auto;
-        border-radius: 6px;
-        }
-        .line {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 images per row */
-        gap: 12px;
-        max-width: 960px;
-        margin: 2rem auto;
-        }
-        .line img {
-        width: 100%;
-        height: 220px;       /* same height for all */
-        object-fit: contain;   /* crop to fill without distortion */
-        border-radius: 8px;
-        display: block;
-        }
-    </style>
-    <!-- Article header -->
-    <h1 class="title"> Fun with Filters and Frequencies </h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fun with Filters and Frequencies</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .line {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 960px;
+      margin: 2rem auto;
+    }
+    .line img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .page-content .placeholder {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-meta > div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .page-meta strong {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .page-meta div div {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    figure {
+      margin: 24px 0;
+    }
+    center {
+      text-align: center;
+      margin: 24px 0;
+    }
+    center img {
+      max-width: 100%;
+      height: auto;
+    }
+    .page-content img {
+      display: block;
+      margin: 24px auto;
+      max-width: 100%;
+      height: auto;
+    }
+    figure.gallery img,
+    figure.line img,
+    .gallery img,
+    .line img {
+      margin: 0;
+    }
+    figure.gallery,
+    figure.line {
+      text-align: center;
+    }
+  </style>
+</head>
 
-    <div class="meta">
-      <div><strong>Author</strong><div>Abrahm DeVine</div></div>
-      <div><strong>Published</strong><div>September 26, 2025</div></div>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
     </div>
-  
-    <!-- Content + Sidebar -->
-    <div class="layout">
-      <!-- Main content -->
+  </header>
+
+  <main class="container">
+    <div class="page-content">
+      <h1>Fun with Filters and Frequencies</h1>
+
+      <div class="page-meta">
+        <div>
+          <strong>Author</strong>
+          <div>Abrahm DeVine</div>
+        </div>
+        <div>
+          <strong>Published</strong>
+          <div>September 26, 2025</div>
+        </div>
+      </div>
+
       <article>
         <section id="introduction">
           <h2>Introduction</h2>
@@ -55,10 +152,11 @@
                 are two convolution implementations, using both 4 and 2 loops to calculate the convolutions.
             </p>
             
-            <figure class="line">
-                <img src="data/convolve4l.jpg" alt="Convolution implemented with 4 four loops. ">
-                <img src="data/convolve2l.jpg" alt="Convolution implemented with 2 four loops. ">
-            </figure>
+                <figure class="line">
+                    <img src="data/convolve4l.jpg" alt="Convolution implemented with 4 four loops. ">
+                    <img src="data/convolve2l.jpg" alt="Convolution implemented with 2 four loops. ">
+                </figure>
+            
             
             <figure class="gallery">
                 <img src="data/BW_self.jpg" alt="The original image. ">
@@ -256,5 +354,25 @@
 
             <p> If we instead match the saturations, the image blending is much more convincing. </p>
         </section>
+      </article>
     </div>
   </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span> <span id="year"></span> Abrahm DeVine </span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
