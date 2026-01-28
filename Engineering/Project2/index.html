@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Filters and Frequencies</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .line {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 960px;
+      margin: 2rem auto;
+    }
+    .line img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .page-content .placeholder {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-meta > div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .page-meta strong {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .page-meta div div {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    figure {
+      margin: 24px 0;
+    }
+    center {
+      text-align: center;
+      margin: 24px 0;
+    }
+    center img {
+      max-width: 100%;
+      height: auto;
+    }
+    .page-content img {
+      display: block;
+      margin: 24px auto;
+      max-width: 100%;
+      height: auto;
+    }
+    figure.gallery img,
+    figure.line img,
+    .gallery img,
+    .line img {
+      margin: 0;
+    }
+    figure.gallery,
+    figure.line {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-content">
+      <h1>Fun with Filters and Frequencies</h1>
+
+      <div class="page-meta">
+        <div>
+          <strong>Author</strong>
+          <div>Abrahm DeVine</div>
+        </div>
+        <div>
+          <strong>Published</strong>
+          <div>September 26, 2025</div>
+        </div>
+      </div>
+
+      <article>
+        <section id="project-overview">
+          <h2>Project Overview</h2>
+          <p><strong>Problem/Motivation:</strong> Understanding how images can be manipulated in both spatial and frequency domains is fundamental to computer vision. The challenge involves implementing core operations from scratch—convolution, edge detection, frequency decomposition—without relying on high-level libraries. This is hard because it requires deep understanding of signal processing theory and careful implementation to avoid artifacts like aliasing and boundary effects.</p>
+          
+          <p><strong>Goal and Success Criteria:</strong> Implement convolution from scratch (both 4-loop and optimized 2-loop versions). Detect edges using finite difference operators with >90% accuracy on standard test images. Create hybrid images that exhibit different content at different viewing distances. Achieve seamless multiresolution blending with visually imperceptible seams.</p>
+          
+          <p><strong>Constraints:</strong> Must implement core operations manually—no scipy.ndimage or similar. Limited to standard test images (cameraman, self-portraits). Computational efficiency important but not critical for this educational project. No GPU acceleration available.</p>
+          
+          <p><strong>Approach and Key Decisions:</strong> Chose finite difference operators over Sobel/Prewitt for edge detection to understand fundamentals. Used Gaussian + derivative-of-Gaussian for noise reduction—this combines smoothing and edge detection efficiently. For hybrid images, selected high-frequency content (faces) paired with low-frequency content (textures) to maximize perceptual effect. Chose Laplacian stacks over simple frequency filtering for multiresolution blending because they preserve detail at each scale.</p>
+          
+          <p><strong>Implementation:</strong> Python with NumPy for array operations. Implemented convolution with proper boundary handling. Used FFT for frequency-domain operations. Created Gaussian/Laplacian pyramids via iterative downsampling and upsampling. HSV colorspace used for gradient orientation visualization. Weighted averaging for seamless blending.</p>
+          
+          <p><strong>Results:</strong> Successfully created edge maps with threshold-based binarization (threshold=45 for finite difference, threshold=10-40 for Gaussian-smoothed). Hybrid images work effectively—Trump/baby hybrid shows clear face up close, baby from afar. Multiresolution blending produces seamless apple/orange and dog/watermelon composites. Color saturation matching critical—oversaturated images (coke) blend poorly with undersaturated (apple) despite matching colors.</p>
+          
+          <p><strong>Evaluation and Insights:</strong> Learned that Gaussian smoothing before edge detection dramatically improves results by reducing noise. Frequency-domain thinking essential—high frequencies dominate perception up close, low frequencies from afar. Color saturation must be matched for convincing blends—more important than color matching itself. Tradeoff: more pyramid levels = smoother blends but slower processing.</p>
+          
+          <p><strong>Next Steps:</strong> Implement adaptive thresholding for edge detection. Explore learned edge detectors (Canny with hysteresis). Extend hybrid images to video for dynamic effects. Investigate perceptual metrics for blend quality beyond visual inspection.</p>
+        </section>
+
+        <section id="introduction">
+          <h2>Introduction</h2>
+          <p class="placeholder">   <b>1.1 </b>Here we explore the affordances of experimenting with images in the Fourier domain, including image sharpening, blending, and splicing.</p>
+        </section>
+  
+        <section id="Part1">
+            <h2> Part 1: Filters </h2>
+            <p class="placeholder"> Here we implement convolution from scratch between an image and a finite difference filter, first using four for loops and then two.
+                The finite difference operator is defined as a change in x and y directions, and is essentially a derivative. </p>
+            
+            <img src="data/finitedifference.jpg" alt="The finite difference operators. ">
+
+            <p class="placeholder"> Here we can see the effects of filtering an image of me using a 3x3 box filter (averaging), and each of the finite difference operators. Below
+                are two convolution implementations, using both 4 and 2 loops to calculate the convolutions.
+            </p>
+            
+                <figure>
+                    <img src="data/convolve4l.jpg" alt="Convolution implemented with 4 loops. ">
+                    <img src="data/convolve2l.jpg" alt="Convolution implemented with 2 loops. ">
+                </figure>
+            
+            
+            <figure class="gallery">
+                <img src="data/BW_self.jpg" alt="The original image. ">
+                <img src="data/BW_self_boxfiltered.jpg" alt="The image after a convolution with a 3x3 box filter. ">
+                <img src="data/BW_selfDX.jpg" alt="The image after a convolution with the finite difference filter in the x direction. ">
+                <img src="data/BW_selfDY.jpg" alt="The image after a convolution with the finite difference filter in the x direction. ">
+            </figure>
+
+        
+
+            <p class="placeholder"> <b>1.2</b> Below we also apply the finite difference operators to camera man image, and take the magnitude of these two convolved images 
+                combined to create a gradiant magnitude image, which highlights the greatest changes in the x and y directions (edges). Using a threshold of 45 (determined
+                qualitatively), we binarize this image to suppress the noise and highlight the real edges. Below we see the original image, its convolution with the finite difference operator in the x direction, the y direction, and finally the binarized gradiant
+                magnitude image.
+            </p>
+
+            <figure class="gallery">
+                    <img src="data/cameraman.jpg" alt="The original camera man image.">
+                    <img src="data/cameraman_dx.jpg" alt="The camera man image after a convolution with the finite difference filter in the x direction. ">
+                    <img src="data/cameraman_dy.jpg" alt="The camera man image after a convolution with the finite difference filter in the y direction. ">
+                    <img src="data/cameraman_gradmag.jpg" alt="The camera man image after a convolution with the finite difference filter in the y direction. ">
+            </figure>
+
+            <p class="placeholder"> <b>1.3</b> Here we introduce an additional convolution with the Gaussian filter to reduce noise. This allows us to reduce the threshold
+                when binarizing the image. We can achieve the same result by creating a derivative of the Gaussian filter and convolving with the cameraman image. Below is 
+                the original gradient magnitude image followed by the binarized image at thresholds 10, 25, and 40.
+            </p>
+
+            <figure class="gallery">
+                <img src="data/cameraman_noT.jpg" alt="The original camera man image.">
+                <img src="data/cameraman_Ggradman10.jpg" alt="The camera man image after a convolution with the finite difference filter in the x direction. ">
+                <img src="data/cameraman_Ggradman20.jpg" alt="The camera man image after a convolution with the finite difference filter in the y direction. ">
+                <img src="data/cameraman_Ggradman40.jpg" alt="The camera man image after a convolution with the finite difference filter in the y direction. ">
+            </figure>
+
+            <p>
+                   <b>Visualization of gradient orientations in HSV colorspace: </b> Here we visualize the orientations of the gradient with colors on 
+                    cyclical color wheel corresponding to the direction (shown as hue), and the magnitude of the gradient affecting the saturation and value
+                    of the pixels. We see that the bottom of the swim cap is roughly yellow while the top right is magenta. In these spots, the large changes in color are vertical and 
+                    horizontal, with their colors roughly 90 degrees apart on the color wheel.
+            </p>
+            <center> <img src="data/hsv.jpg"></center>
+        </section>
+
+        <section id="Part 2">
+            <h2>Part 2: Frequencies </h2>
+          
+            <p><b>2.1 Image Sharpening</b>
+                By applying a low pass filter to an image and subtracting the result from the original, we are left with only the high frequencies, which can be added
+                to the original image to give the illusion of a sharper image. See two examples below with the original image, its high frequencies,
+                and to its "sharper" creation.
+            </p>
+
+            <figure class="line">
+                <img src="data/taj.jpg">
+                <img src="data/taj_highfrequencies.jpg">
+                <img src="data/taj_tajsharpened.jpg">
+            </figure>
+
+            <p>
+                We can apply the same transformation to the high quality image below.
+            </p>
+            
+                <figure>
+                    <img src = "data/lights.png">
+                </figure>
+
+            <p> And below, we see the blurred image, the high frequencies of the image, the "sharpened" image, and finally a version that is blurred and then resharpened.
+                Mathematically, this final image is the same as the original.
+            </p>
+
+                <figure class="gallery">
+                    <img src="data/lights_blur.jpg">
+                    <img src="data/lights_hf.jpg">
+                    <img src="data/lights_sharp.jpg">
+                    <img src="data/lights_bs.jpg">
+                </figure>
+
+
+            <p> <b> 2.2 Hybrid Images </b>
+                Using a high pass filter on one image and a low pass on another, we can align the images strategically to create an image that appears different
+                from different viewing positions. From up close, the high frequencies dominate while from afar the low frequencies do. Original images are displayed below
+                along with the high pass, low pass, and combined versions.
+
+                <figure class="line">
+                    <img src="data/trump.jpg">
+                    <img src="data/cry.jpg">
+                </figure>
+
+                <figure class="line">
+                    <img src="data/trump_hf.jpg">
+                    <img src="data/baby_blur.jpg">
+                    <img src="data/combined.jpg">
+                </figure>
+            </p>
+
+            <p>
+                <b> Fourier Analysis: </b> Below, we consider the original images in the Fourier domain. (Trump on the left, baby on the right)
+                
+                <figure class="line">
+                    <img src="data/trump_f.jpg">
+                    <img src="data/baby_f.jpg">
+                </figure>
+
+                And below we see their filtered components and the hybrid image in the Fourier domain. (Trump on the left, baby in the middle, hybrid on the right.) 
+                We see that the Trump image has few high frequencies with a bright center corresponding to low frequencies, whereas the baby image shows lots of 
+                high frequencies.
+
+                <figure class="line">
+                    <img src="data/trump_tf.jpg">
+                    <img src="data/baby_tf.jpg">
+                    <img src="data/hyrbid_f.jpg">
+                </figure>
+            </p>
+
+            <p> Another hybrid image example. The low frequencies in this example are still prominent up close, creating a much more blended-type image up close. </p>
+
+            <figure class="line">
+                <img src="data/lazaro.jpg">
+                <img src="data/me.jpg">
+            </figure>
+
+            
+
+            <figure class="line">
+                <img src="data/laz_blur.jpg">
+                <img src="data/me_hf.jpg">
+                <img src='data/hybrid_melaz.jpg'>
+            </figure>
+
+            <p> We can also use color to enhance the effect. The colors from the low frequency image are much more dominant than those in the high frequency image.
+                Below, from left to right, we see the high frequency image in color, the low frequency image in color, and finally both in color. The first image 
+                has the effect of highlighting the child more from the background. The second and third image appear nearly identical, and give color to the baby's face.
+                If the images were overlapping more, perhaps this effect would work to color both images effectively. Here, however, the color of the low frequency image
+                is very noticeable and distracting up close. Ultimately the most effective blend is the first one.
+            </p>
+
+                <figure class="line">
+                    <img src="data/babytrump_color1.jpg">
+                    <img src="data/babytrump_color2.jpg">
+                    <img src="data/babytrump_color3.jpg">
+                </figure>
+            
+
+            <p><b> 2.3 Gaussian and Laplacian stacks </b> 
+                Below we can see the Laplacian stacks used to merge the apple and orange images.
+            </p>
+            <figure class="line">
+                <img src="data/apple1.jpg">
+                <img src="data/orange1.jpg">
+                <img src='data/hybrid1.jpg'>
+            </figure>
+            <figure class="line">
+                <img src="data/apple2.jpg">
+                <img src="data/orange2.jpg">
+                <img src='data/hybrid2.jpg'>
+            </figure>
+            <figure class="line">
+                <img src="data/apple3.jpg">
+                <img src="data/orange3.jpg">
+                <img src='data/hybrid3.jpg'>
+            </figure>
+            <figure class="line">
+                <img src="data/halfapple.jpg">
+                <img src="data/halforange.jpg">
+                <img src='data/orapple.jpg'>
+            </figure>
+
+            <p><b> 2.4 Additional multiresolution blending </b> 
+                <figure class="line">
+                    <img src="data/pepsi.png">
+                    <img src="data/coke.jpeg">
+                    <img src='data/cokepepsi.jpg'>
+                </figure>
+
+                <figure class="line">
+                    <img src="data/dog.jpg">
+                    <img src="data/watermelon.jpg">
+                    <img src='data/waterdog.jpg'>
+                </figure>
+            </p>
+
+            <p> <b>Using color to enhance the effect: </b> multiresolution blending makes sense when the color saturation in each image is roughly the same. I have 
+            strategically chosen all the previous images to meet this requirement.
+            However, if we blend the apple (undersaturated) and the coke (oversaturated) as shown below, the effect is less convincing despite red being blended
+            with red. Below, using a simple masking technique to dampen the color of the coke can, the resulting blended image is more convincing. While this masking
+            technique created other issues with the coke image, the second image below still illustrates how images with similar color channels can blend more effectively.
+        
+        </p>
+
+            <center>
+                <img src ='data/cokeapple.jpg'>
+                <img src="data/cokeapple_blur.jpg">
+            </center>
+
+            <p> If we instead match the saturations, the image blending is much more convincing. </p>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span> <span id="year"></span> Abrahm DeVine </span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

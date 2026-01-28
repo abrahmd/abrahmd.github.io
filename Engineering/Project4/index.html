@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neural Radiance Fields</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .line {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 960px;
+      margin: 2rem auto;
+    }
+    .line img {
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .line2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 1700px;
+      margin: 2rem auto;
+    }
+    .line2 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .line5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      max-width: 2000px;
+      margin: 2rem auto;
+    }
+    .line5 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    figure {
+      margin: 24px 0;
+    }
+    figure figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+    figure.line figcaption,
+    figure.line2 figcaption,
+    figure.line5 figcaption,
+    figure.gallery figcaption {
+      grid-column: 1 / -1;
+      text-align: center;
+      width: 100%;
+    }
+    .page-content img {
+      display: block;
+      margin: 24px auto;
+      max-width: 100%;
+      height: auto;
+    }
+    figure.gallery img,
+    figure.line img,
+    figure.line2 img,
+    figure.line5 img,
+    .gallery img,
+    .line img,
+    .line2 img,
+    .line5 img {
+      margin: 0;
+    }
+    figure.gallery,
+    figure.line,
+    figure.line2,
+    figure.line5 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-content">
+      <h1>Implementing Neural Radiance Fields</h1>
+
+      <section id="project-overview">
+        <h2>Project Overview</h2>
+        <p><strong>Problem/Motivation:</strong> Neural Radiance Fields (NeRF) represent a breakthrough in 3D scene reconstruction from 2D images, but training requires understanding coordinate transformations, ray sampling, and neural network architectures. The challenge is learning a continuous 3D representation (color and density) from sparse, multi-view observations. This is hard because it requires solving an inverse rendering problem—inferring 3D structure from 2D projections without explicit 3D supervision.</p>
+        
+        <p><strong>Goal and Success Criteria:</strong> Fit a neural field to represent 2D images with PSNR >25dB after 2000 iterations. Reconstruct 3D scenes from multi-view images with PSNR >20dB. Generate novel viewpoints with visually convincing results. Achieve training convergence within reasonable time (<10 hours for NeRF).</p>
+        
+        <p><strong>Constraints:</strong> Limited compute—training on CPU/limited GPU. Lego dataset provided but must capture own data for real-world validation. Camera calibration via Aruco tags (manual process). Near/far plane parameters must be tuned per scene (0.2-1.0m for close objects, 2-6m for distant).</p>
+        
+        <p><strong>Approach and Key Decisions:</strong> Started with 2D neural field to understand fundamentals before 3D. Chose sinusoidal positional encoding (L=4, 42 dimensions) over raw coordinates—critical for learning high-frequency details. Used 6-layer MLP (256 neurons) as baseline. For NeRF, chose volume rendering over surface-based methods for robustness. Sampled 32-64 points per ray (more for close scenes). Used Adam optimizer (lr=1e-3) with MSE loss. Selected Gaussian pyramid approach for multi-scale training.</p>
+        
+        <p><strong>Implementation:</strong> PyTorch for neural networks. Implemented camera calibration pipeline using Aruco tags. Ray sampling with stratified random sampling between near/far planes. Volume rendering via numerical integration. Positional encoding with learnable frequencies. Training on batches of rays sampled across all images.</p>
+        
+        <p><strong>Results:</strong> 2D neural field achieves PSNR ~30dB after 2000 iterations, plateauing around 1750. Positional encoding frequency (L) more important than network width—L=4 with width=20 outperforms L=0 with width=100. NeRF successfully reconstructs Lego truck with convincing novel views. Real-world teapot reconstruction works but requires careful parameter tuning (64 samples/ray, 0.2-1.0m range). Training curves show convergence by 4000-8000 iterations.</p>
+        
+        <p><strong>Evaluation and Insights:</strong> Learned that positional encoding is essential—without it, networks struggle with high-frequency details. More training iterations don't always help—plateau detection important. Real-world data much harder than synthetic—requires careful calibration and parameter tuning. Tradeoff: more samples per ray = better quality but slower training. Near/far plane selection critical—wrong bounds cause poor reconstruction.</p>
+        
+        <p><strong>Next Steps:</strong> Implement hierarchical sampling for efficiency. Add view-dependent effects (specular highlights). Explore instant-NGP for faster training. Extend to dynamic scenes and video.</p>
+      </section>
+
+    <h1>Part 0 - Calibrating the camera and capturing a 3d scan</h1>
+    <figure class="line2">
+        <img src = "data/Viser1.png">
+        <img src = "data/Viser2.png">
+    </figure>
+
+    <p> In the above images, we see two visualizations of the same 30+ photos of my favorite pencil holder. We see the camera frustum poses and the resulting images. </p>
+
+      <article>
+
+        <h1>Part 1 - Fitting a Neural Field to a 2d Image</h1>
+
+    <p> 
+        Here we construct a Neural Field (F: {u, v} -> {r, g, b}) that can represent a 2d image in the neural network space. <br>
+        We first build a multilayer perceptron with an input of a 42 dimensional sinusoidal positional encoding of the (x,y) coordinates, 6 hidden layers of 256 neurons each <br>
+        and each followed by a ReLU activation function, and the sigmoid function mapping predictions to a 3D RGB output. This network was trained using the Adam optimizer, <br>
+        a learning rate of 1e-3, and 2000 iterations with a batch size of 10k in the training loop. The loss function used was MSE loss. <br>
+        Below we see two images learned by the network. Each image is reconstructed below after 0, 100, 200, 1000, and 2000 iterations. <br>
+    </p>
+
+        <figure class="line5">
+            <img src = 'data/fox_0.jpg'>
+            <img src = 'data/fox_100.jpg'>
+            <img src = 'data/fox_200.jpg'>
+            <img src = 'data/fox_1000.jpg'>
+            <img src = 'data/fox_1999.jpg'>
+        </figure>
+
+        <figure class="line5">
+            <img src = 'data/lazaro_0.jpg'>
+            <img src = 'data/lazaro_100.jpg'>
+            <img src = 'data/lazaro_200.jpg'>
+            <img src = 'data/lazaro_1000.jpg'>
+            <img src = 'data/lazaro_1999.jpg'>
+        </figure>
+
+        <p> Below Peak Signal-to-Noise Ratio (PSNR) graphed over 2000 training iterations of the second image.  It seems to plateau around 1750 iterations <br>
+            but reaches a reasonable result much sooner, even around 250 iterations.
+
+        </p>
+
+        <img src = "data/psnr_curve.png" width="1000px">
+
+    <p> Below we see the effects of altering the width of the model and the positional encoding frequency. From left to right top to bottom, the four images show
+        width=20 & L=0, width=20 & L=4, width = 100 & L = 0, width = 100 & L = 4. Each image is shown on the 2000th iteration. <br>
+        It seems that adding dimensions to the input in the positional encoding produces reasonably clear results before adding width to the model. In both instances
+        where L=0, we see the blurriest images.
+     </p>
+
+        <figure class = "gallery">
+            <img src = 'data/lazaro_L0W20_1999.jpg'>
+            <img src = 'data/lazaro_L4W20_1999.jpg'>
+            <img src = 'data/lazaro_L0W100_1999.jpg'>
+            <img src = 'data/lazaro_L4W100_1999.jpg'>
+        </figure>
+    
+        <h1>Part 2 - Fitting a Neural Radiance Field from Multi-view Images</h1>
+
+    In this section I fit a neural radiance field from a predefined lego dataset. To implement this from images taken from a calibrated camera, pixels need to be
+    converted first to camera coordinates, world coordinates, and finally into rays.
+    The pixel to camera conversion takes place by using the inverse of the intrinsics matrix to transform the homogeneous pixel coordinate to 3D space. We then multiply
+    this result by the inverse of the extrinsic matrix to get this coordinate in world coordinates (defined by the Aruco tags in the images I captured). For this same pixel,
+    we can define a ray with the camera center (given as the translation component in the camera-to-world matrix) the pixel in world at a depth of one from the camera center. 
+    The MLP is constructed with the architecture below,
+
+    <img src = "model_architecture.png"> <br>
+
+    Then, to train the neural radiance field, we sample rays across all images and sample points along these rays, randomly dispersed between some distance interval. For 
+    the Lego scene, this interval is between 2 and 6 meters. Below is a visualization of this sampling method across many images and from only one camera.
+
+    <figure class = "gallery">
+        <img src = 'frustrums2.png'>
+        <img src = 'frustrums1.png'>
+    </figure>
+
+    As we train the NeRF, the network learns the color densities at points in space. Below is a rendered perspective from the validation set at 0 iterations of training, 500
+    iterations, 4,000 iterations, and 9500 iterations.
+
+    <figure class = "gallery">
+        <img src = 'results/rendered_image_0.jpg'>
+        <img src = 'results/rendered_image_500.jpg'>
+        <img src = 'results/rendered_image_4000.jpg'>
+        <img src = 'results/rendered_image_9500.jpg'>
+    </figure>
+
+    Below we see the MSE and PSNR curves generated during training.
+
+        <img src = 'results/mse_plot.png'>
+        <img src = 'results/psnr_plot.png'>
+    <br>
+    And finally, using the spherical perspectives from the test set, we can generate a 3D view of the lego truck. <br>
+
+    <img src = "test_results.gif">
+
+    <br>
+    Now, we can repeat the process on data collected from an iPhone camera, using Aruco tags to calibrate the camera. I tried to capture photos within 1 meter of the teapot,
+    so I changed my near/far parameters to be 0.2-1.0. I also sampled 64 points per ray as opposed to 32. 
+    Below is a rendered perspective from the validation set at
+    0 iterations of training, 500 iterations, 4,000 iterations, and 8,000 iterations, along with the MSE and PSNR curves. 
+
+
+    <figure class = "gallery">
+        <img src = 'results/rendered_kitty_0.jpg'>
+        <img src = 'results/rendered_kitty_500.jpg'>
+        <img src = 'results/rendered_kitty_4000.jpg'>
+        <img src = 'results/rendered_kitty_8000.jpg'>
+    </figure>
+
+    <img src = 'results/mse_plot_kitty.png'>
+    <img src = 'results/psnr_plot_kitty.png'>
+
+
+    <br>
+    And the final rendered 3D gif: <br>
+    <img src = "teapot2.gif">
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span><span id="year"></span> Abrahm DeVine</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
