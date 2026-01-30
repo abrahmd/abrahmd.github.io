@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soft-Finger Robotic Gripper</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <style>
+    .page-content {
+      padding: 34px 0;
+    }
+    .page-content h1 {
+      margin: 0 0 8px 0;
+      font-size: 2.2rem;
+      letter-spacing: -0.03em;
+    }
+    .page-content h2 {
+      margin: 32px 0 14px 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .page-content p {
+      margin: 0 0 18px 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .page-content strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="top-nav">
+        <a class="brand" href="../../index.html">Home</a>
+        <div class="nav-links">
+          <a href="../engineering.html">Engineering</a>
+          <a href="../swimming.html">Swimming</a>
+          <a href="../film.html">Film</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-content">
+      <h1>Soft-Finger Robotic Gripper: Learning-Based Force Estimation and Control</h1>
+
+      <article>
+        <section id="project-overview">
+          <h2>Problem / Motivation</h2>
+          <p>Soft robotic grippers offer advantages over rigid grippers in safety, adaptability, and robustness to object variation, 
+            but their compliant materials make precise force estimation and control difficult. 
+            Traditional analytical models struggle to capture the nonlinear, history-dependent dynamics of soft materials, 
+            limiting reliable manipulation. This project investigates whether data-driven sequence models can accurately estimate 
+            contact forces in a soft, two-finger robotic gripper and enable more reliable force modulation during grasping.</p>
+
+          <h2>Goal and Success Criteria</h2>
+          <p>The goal of this research was to learn a mapping between actuator control inputs and resulting contact forces using real experimental data and demonstrating 
+            the use of the use of this model on a real robotic task.
+            </p>
+
+          <h2>Constraints</h2>
+          <p>The system operates under real-world experimental constraints, including limited data collection throughput, sensor noise, and variability in material behavior over time. Models needed to be sample-efficient and stable under noisy measurements, while remaining interpretable enough to support iterative experimentation and future control integration.</p>
+
+          <h2>Approach and Key Decisions</h2>
+          <p>I adopted a learning-based approach to model the gripper's dynamics, focusing on sequence models capable of capturing temporal dependencies in actuation and deformation. Recurrent architectures were chosen to account for hysteresis and delayed responses inherent in soft materials. Rather than directly optimizing control policies, the project prioritized accurate forward modeling as a foundation for future model-based control.</p>
+
+          <h2>Implementation</h2>
+          <p>I designed and executed large-scale data collection experiments using a custom soft two-finger gripper, recording actuator commands and measured contact forces across repeated trials. Multiple regression and sequence models were trained and evaluated, including recurrent neural networks, to predict force trajectories from control inputs. Model training and evaluation were conducted using standardized metrics to assess both pointwise accuracy and temporal consistency.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span><span id="year"></span> Abrahm DeVine</span>
+        <div class="footer-links">
+          <a href="https://www.linkedin.com/">LinkedIn</a>
+          <a href="https://github.com/">GitHub</a>
+          <a href="mailto:you@email.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
